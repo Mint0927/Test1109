@@ -1,0 +1,90 @@
+/* 乃木フェス計算ツール / 05-accuracy.css
+   元のCSSの機能別ブロックを移動し、各設定に日本語コメントを追加しています。 */
+
+/* ==========================================
+
+   14. 精度設定
+
+========================================== */
+
+
+
+.accuracy-grid {
+
+  /* 要素の表示・配置方法を指定 */
+  display: grid;
+
+  /* グリッドの列数と幅を指定 */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  /* 要素間の余白を指定 */
+  gap: 9px;
+
+}
+
+
+
+.accuracy-item {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 並び方向を指定 */
+  flex-direction: column;
+
+  /* 横幅の下限を指定 */
+  min-width: 0;
+
+
+
+  /* 要素の内側の余白を指定 */
+  padding: 10px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #faf7fc;
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #eadff0;
+
+  /* 角を丸くする */
+  border-radius: 8px;
+
+}
+
+
+
+.accuracy-item label {
+
+  /* 下側の外側余白を指定 */
+  margin-bottom: 6px;
+
+
+
+  /* 文字色を指定 */
+  color: #555555;
+
+  /* 文字の大きさを指定 */
+  font-size: 13px;
+
+}
+
+
+
+.accuracy-item select {
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 高さを指定 */
+  height: 38px;
+
+  /* 文字の大きさを指定 */
+  font-size: 14px;
+
+}
+
+
+
+

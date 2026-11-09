@@ -1,0 +1,454 @@
+/* 乃木フェス計算ツール / 04-bonus.css
+   元のCSSの機能別ブロックを移動し、各設定に日本語コメントを追加しています。 */
+
+/* ==========================================
+
+   10. 特攻値設定
+
+========================================== */
+
+
+
+.bonus-settings {
+
+  /* 上側の外側余白を指定 */
+  margin-top: 18px;
+
+  /* 要素の内側の余白を指定 */
+  padding: 14px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #faf7fc;
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #e7dced;
+
+  /* 角を丸くする */
+  border-radius: 10px;
+
+}
+
+
+
+.bonus-settings-title {
+
+  /* 要素の外側の余白を指定 */
+  margin: 0 0 12px;
+
+
+
+  /* 文字色を指定 */
+  color: var(--purple);
+
+  /* 文字の大きさを指定 */
+  font-size: 16px;
+
+}
+
+
+
+.bonus-row {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 必要に応じて折り返す */
+  flex-wrap: wrap;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center;
+
+
+
+  /* 要素間の余白を指定 */
+  gap: 12px;
+
+  /* 要素の内側の余白を指定 */
+  padding: 12px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #ffffff;
+
+  /* 角を丸くする */
+  border-radius: 8px;
+
+}
+
+
+
+.bonus-input,
+
+.event-point {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 並び方向を指定 */
+  flex-direction: column;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: flex-start;
+
+}
+
+
+
+.bonus-input label,
+
+.event-point label,
+
+.bonus-change-row label {
+
+  /* 下側の外側余白を指定 */
+  margin-bottom: 5px;
+
+
+
+  /* 文字色を指定 */
+  color: #666666;
+
+  /* 文字の大きさを指定 */
+  font-size: 13px;
+
+}
+
+
+
+.bonus-input-unit {
+
+  /* 要素の表示・配置方法を指定 */
+  display: inline-flex;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center;
+
+  /* 要素間の余白を指定 */
+  gap: 5px;
+
+}
+
+
+
+.bonus-input-unit input {
+
+  /* 横幅を指定 */
+  width: 95px;
+
+  /* 高さを指定 */
+  height: 40px;
+
+  /* 文字の大きさを指定 */
+  font-size: 16px;
+
+}
+
+
+
+.bonus-input-unit span {
+
+  /* 文字色を指定 */
+  color: #555555;
+
+  /* 文字の大きさを指定 */
+  font-size: 15px;
+
+}
+
+
+
+.event-point output {
+
+  /* 要素の表示・配置方法を指定 */
+  display: inline-block;
+
+  /* 要素の内側の余白を指定 */
+  padding: 9px 12px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #f1e7fa;
+
+  /* 文字色を指定 */
+  color: var(--purple);
+
+
+
+  /* 角を丸くする */
+  border-radius: 7px;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 15px;
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+}
+
+
+
+
+/* ==========================================
+
+   11. 特攻値変更欄
+
+========================================== */
+
+
+
+.bonus-change-row {
+
+  /* 要素の表示・配置方法を指定 */
+  display: grid;
+
+  /* グリッドの列数と幅を指定 */
+  grid-template-columns: minmax(0, 1fr);
+
+
+
+  /* 要素間の余白を指定 */
+  gap: 10px;
+
+  /* 上側の外側余白を指定 */
+  margin-top: 10px;
+
+  /* 要素の内側の余白を指定 */
+  padding: 12px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #ffffff;
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #e4d6ed;
+
+  /* 角を丸くする */
+  border-radius: 9px;
+
+}
+
+
+
+.bonus-change-time,
+
+.bonus-change-value {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 並び方向を指定 */
+  flex-direction: column;
+
+  /* 要素間の余白を指定 */
+  gap: 6px;
+
+}
+
+
+
+.bonus-time-inputs {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 必要に応じて折り返す */
+  flex-wrap: wrap;
+
+  /* 要素間の余白を指定 */
+  gap: 8px;
+
+}
+
+
+
+.bonus-time-unit {
+
+  /* 要素の表示・配置方法を指定 */
+  display: inline-flex;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center;
+
+  /* 要素間の余白を指定 */
+  gap: 4px;
+
+}
+
+
+
+.bonus-time-unit input {
+
+  /* 横幅を指定 */
+  width: 58px;
+
+  /* 高さを指定 */
+  height: 38px;
+
+  /* 文字の大きさを指定 */
+  font-size: 14px;
+
+}
+
+
+
+.bonus-time-unit span {
+
+  /* 文字色を指定 */
+  color: #555555;
+
+  /* 文字の大きさを指定 */
+  font-size: 12px;
+
+}
+
+
+
+.bonus-change-controls {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center;
+
+  /* 必要に応じて折り返す */
+  flex-wrap: wrap;
+
+  /* 要素間の余白を指定 */
+  gap: 10px;
+
+}
+
+
+
+.bonus-change-point {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 並び方向を指定 */
+  flex-direction: column;
+
+  /* 要素間の余白を指定 */
+  gap: 3px;
+
+
+
+  /* 要素の内側の余白を指定 */
+  padding: 8px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #f3edf8;
+
+  /* 文字色を指定 */
+  color: var(--purple);
+
+
+
+  /* 角を丸くする */
+  border-radius: 7px;
+
+  /* 文字の大きさを指定 */
+  font-size: 13px;
+
+}
+
+
+
+.bonus-change-point output {
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+}
+
+
+
+.delete-bonus-button {
+
+  /* 横幅を指定 */
+  width: 60px;
+
+  /* 高さを指定 */
+  height: 36px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #f4e8e8;
+
+  /* 文字色を指定 */
+  color: #b33b3b;
+
+
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #e8caca;
+
+  /* 角を丸くする */
+  border-radius: 6px;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 13px;
+
+  /* マウスカーソルの形を指定 */
+  cursor: pointer;
+
+}
+
+
+
+.add-bonus-button {
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 高さを指定 */
+  height: 40px;
+
+  /* 上側の外側余白を指定 */
+  margin-top: 12px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #eee3f6;
+
+  /* 文字色を指定 */
+  color: var(--purple);
+
+
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #d9c4e8;
+
+  /* 角を丸くする */
+  border-radius: 8px;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 14px;
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+  /* マウスカーソルの形を指定 */
+  cursor: pointer;
+
+}
+
+
+
+

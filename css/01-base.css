@@ -1,0 +1,561 @@
+/* 乃木フェス計算ツール / 01-base.css
+   元のCSSの機能別ブロックを移動し、各設定に日本語コメントを追加しています。 */
+
+
+
+/* ==========================================
+
+   乃木フェス計算ツール
+
+   style.css 整理版
+
+========================================== */
+
+
+
+/* ==========================================
+
+   1. 共通変数
+
+========================================== */
+
+
+
+:root {
+
+  /* デザインで使う共通変数「--purple」を定義 */
+  --purple: #7926b9;
+
+  /* デザインで使う共通変数「--purple-dark」を定義 */
+  --purple-dark: #6b21a8;
+
+  /* デザインで使う共通変数「--purple-light」を定義 */
+  --purple-light: #faf5ff;
+
+  /* デザインで使う共通変数「--purple-border」を定義 */
+  --purple-border: #d9b8ff;
+
+
+
+  /* デザインで使う共通変数「--body-background」を定義 */
+  --body-background: #f7f4fa;
+
+  /* デザインで使う共通変数「--main-background」を定義 */
+  --main-background: #ffffff;
+
+  /* デザインで使う共通変数「--main-text-color」を定義 */
+  --main-text-color: #333333;
+
+  /* デザインで使う共通変数「--sub-text-color」を定義 */
+  --sub-text-color: #777777;
+
+
+
+  /* デザインで使う共通変数「--container-width」を定義 */
+  --container-width: 430px;
+
+  /* デザインで使う共通変数「--container-padding」を定義 */
+  --container-padding: 12px;
+
+
+
+  /* デザインで使う共通変数「--base-font-size」を定義 */
+  --base-font-size: 15px;
+
+  /* デザインで使う共通変数「--base-line-height」を定義 */
+  --base-line-height: 1.6;
+
+
+
+  /* デザインで使う共通変数「--common-radius」を定義 */
+  --common-radius: 12px;
+
+  /* デザインで使う共通変数「--common-shadow」を定義 */
+  --common-shadow: 0 3px 12px rgba(60, 30, 80, 0.08);
+
+
+
+  /* デザインで使う共通変数「--title-background」を定義 */
+  --title-background: #7926b9;
+
+  /* デザインで使う共通変数「--title-text-color」を定義 */
+  --title-text-color: #ffffff;
+
+  /* デザインで使う共通変数「--title-font-size」を定義 */
+  --title-font-size: 20px;
+
+
+
+  /* デザインで使う共通変数「--panel-background」を定義 */
+  --panel-background: #ffffff;
+
+  /* デザインで使う共通変数「--panel-border」を定義 */
+  --panel-border: #e8dff0;
+
+  /* デザインで使う共通変数「--panel-radius」を定義 */
+  --panel-radius: 12px;
+
+  /* デザインで使う共通変数「--panel-padding」を定義 */
+  --panel-padding: 12px;
+
+  /* デザインで使う共通変数「--panel-title-background」を定義 */
+  --panel-title-background: #7926b9;
+
+  /* デザインで使う共通変数「--panel-title-text-color」を定義 */
+  --panel-title-text-color: #ffffff;
+
+  /* デザインで使う共通変数「--panel-title-font-size」を定義 */
+  --panel-title-font-size: 16px;
+
+
+
+  /* デザインで使う共通変数「--input-background」を定義 */
+  --input-background: #ffffff;
+
+  /* デザインで使う共通変数「--input-text-color」を定義 */
+  --input-text-color: #333333;
+
+  /* デザインで使う共通変数「--input-border-color」を定義 */
+  --input-border-color: #d8cce2;
+
+  /* デザインで使う共通変数「--input-focus-color」を定義 */
+  --input-focus-color: #7926b9;
+
+
+
+  /* デザインで使う共通変数「--main-button-background」を定義 */
+  --main-button-background: #7926b9;
+
+  /* デザインで使う共通変数「--main-button-hover-background」を定義 */
+  --main-button-hover-background: #641c9d;
+
+
+
+  /* デザインで使う共通変数「--wheel-background」を定義 */
+  --wheel-background: #ffffff;
+
+  /* デザインで使う共通変数「--wheel-border」を定義 */
+  --wheel-border: #dfd4e7;
+
+  /* デザインで使う共通変数「--wheel-selected-background」を定義 */
+  --wheel-selected-background: #eee2f7;
+
+  /* デザインで使う共通変数「--wheel-selected-color」を定義 */
+  --wheel-selected-color: #7926b9;
+
+
+
+  /* デザインで使う共通変数「--result-number-color」を定義 */
+  --result-number-color: #6b21a8;
+
+}
+
+
+
+
+/* ==========================================
+
+   2. 全体設定
+
+========================================== */
+
+
+
+*,
+
+*::before,
+
+*::after {
+
+  /* 幅・高さに枠線や余白を含める */
+  box-sizing: border-box;
+
+}
+
+
+
+html {
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 横幅の上限を指定 */
+  max-width: 100%;
+
+}
+
+
+
+body {
+
+  /* 要素の外側の余白を指定 */
+  margin: 0;
+
+  /* 要素の内側の余白を指定 */
+  padding: 0;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: var(--body-background);
+
+  /* 文字色を指定 */
+  color: var(--main-text-color);
+
+
+
+  font-family:
+
+    -apple-system,
+
+    BlinkMacSystemFont,
+
+    "Noto Sans JP",
+
+    "Yu Gothic",
+
+    Meiryo,
+
+    sans-serif;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: var(--base-font-size);
+
+  /* 行の高さを指定 */
+  line-height: var(--base-line-height);
+
+}
+
+
+
+.container {
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 横幅の上限を指定 */
+  max-width: var(--container-width);
+
+
+
+  /* 要素の外側の余白を指定 */
+  margin: 12px auto 25px;
+
+  /* 要素の内側の余白を指定 */
+  padding: 0 var(--container-padding);
+
+}
+
+
+
+[hidden] {
+
+  /* 要素の表示・配置方法を指定 */
+  display: none !important;
+
+}
+
+
+
+.screen {
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 横幅の下限を指定 */
+  min-width: 0;
+
+}
+
+
+
+
+/* ==========================================
+
+   3. タイトル
+
+========================================== */
+
+
+
+.title-banner {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center;
+
+  /* 横方向の配置位置を指定 */
+  justify-content: space-between;
+
+
+
+  /* 高さの下限を指定 */
+  min-height: 60px;
+
+  /* 下側の外側余白を指定 */
+  margin-bottom: 14px;
+
+  /* 要素の内側の余白を指定 */
+  padding: 12px 14px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: var(--title-background);
+
+  /* 文字色を指定 */
+  color: var(--title-text-color);
+
+
+
+  /* 角を丸くする */
+  border-radius: 12px;
+
+}
+
+
+
+.title-banner h1 {
+
+  /* 要素の外側の余白を指定 */
+  margin: 0;
+
+  /* 文字の大きさを指定 */
+  font-size: var(--title-font-size);
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+}
+
+
+
+#openSettings {
+
+  /* 横幅を指定 */
+  width: 75px;
+
+  /* 高さを指定 */
+  height: 38px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #ffffff;
+
+  /* 文字色を指定 */
+  color: var(--purple);
+
+
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #ffffff;
+
+  /* 角を丸くする */
+  border-radius: 8px;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 14px;
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+  /* マウスカーソルの形を指定 */
+  cursor: pointer;
+
+}
+
+
+
+
+/* ==========================================
+
+   4. パネル共通
+
+========================================== */
+
+
+
+.panel {
+
+  /* 横幅の下限を指定 */
+  min-width: 0;
+
+
+
+  /* 下側の外側余白を指定 */
+  margin-bottom: 14px;
+
+  /* 要素の内側の余白を指定 */
+  padding: var(--panel-padding);
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: var(--panel-background);
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid var(--panel-border);
+
+  /* 角を丸くする */
+  border-radius: var(--panel-radius);
+
+
+
+  /* 影を付ける */
+  box-shadow: 0 2px 8px rgba(80, 40, 100, 0.05);
+
+}
+
+
+
+.panel-title {
+
+  /* 要素の外側の余白を指定 */
+  margin: 0 0 14px;
+
+  /* 要素の内側の余白を指定 */
+  padding: 10px 14px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: var(--panel-title-background);
+
+  /* 文字色を指定 */
+  color: var(--panel-title-text-color);
+
+
+
+  /* 角を丸くする */
+  border-radius: 8px;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: var(--panel-title-font-size);
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+}
+
+
+
+.panel-content {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 並び方向を指定 */
+  flex-direction: column;
+
+  /* 要素間の余白を指定 */
+  gap: 14px;
+
+  /* 横幅の下限を指定 */
+  min-width: 0;
+
+}
+
+
+
+
+/* ==========================================
+
+   7. 入力欄共通
+
+========================================== */
+
+
+
+input,
+
+select {
+
+  /* 横幅の上限を指定 */
+  max-width: 100%;
+
+
+
+  /* 要素の内側の余白を指定 */
+  padding: 8px 10px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: var(--input-background);
+
+  /* 文字色を指定 */
+  color: var(--input-text-color);
+
+
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid var(--input-border-color);
+
+  /* 角を丸くする */
+  border-radius: 7px;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 15px;
+
+}
+
+
+
+input:focus,
+
+select:focus {
+
+  /* 「outline」の表示設定を指定 */
+  outline: 2px solid var(--input-focus-color);
+
+  /* 「outline-offset」の表示設定を指定 */
+  outline-offset: 1px;
+
+}
+
+
+
+input:disabled,
+
+select:disabled {
+
+  /* 背景の色やグラデーションを指定 */
+  background: #f1eef3;
+
+  /* 文字色を指定 */
+  color: #777777;
+
+}
+
+
+
+input[type="number"] {
+
+  /* 文字の揃え方を指定 */
+  text-align: center;
+
+}
+
+
+
+button {
+
+  /* 文字のフォントを指定 */
+  font-family: inherit;
+
+}
+
+
+
+

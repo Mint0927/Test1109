@@ -1,0 +1,387 @@
+/* 乃木フェス計算ツール / 06-wheel.css
+   元のCSSの機能別ブロックを移動し、各設定に日本語コメントを追加しています。 */
+
+/* ==========================================
+
+   16. 時間ホイール
+
+========================================== */
+
+
+
+.wheel {
+
+  /* 要素の位置指定方式を設定 */
+  position: relative;
+
+
+
+  /* 横幅を指定 */
+  width: 70px;
+
+  /* 高さを指定 */
+  height: 168px;
+
+
+
+  /* 縦方向にはみ出した内容の表示方法を指定 */
+  overflow-y: auto;
+
+  /* 横方向にはみ出した内容の表示方法を指定 */
+  overflow-x: hidden;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: var(--wheel-background);
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid var(--wheel-border);
+
+  /* 角を丸くする */
+  border-radius: 8px;
+
+
+
+  /* スクロール位置を項目に合わせる */
+  scroll-snap-type: y mandatory;
+
+  /* スクロールバーの幅を指定 */
+  scrollbar-width: none;
+
+  /* スクロールの連鎖を制御 */
+  overscroll-behavior: contain;
+
+}
+
+
+
+.wheel::-webkit-scrollbar {
+
+  /* 要素の表示・配置方法を指定 */
+  display: none;
+
+}
+
+
+
+.wheel-spacer {
+
+  /* 要素の表示・配置方法を指定 */
+  display: block;
+
+  /* 伸縮の比率と基本サイズを指定 */
+  flex: 0 0 auto;
+
+
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* マウス・タッチ操作の対象にするか指定 */
+  pointer-events: none;
+
+}
+
+
+
+.wheel-option {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 横方向の配置位置を指定 */
+  justify-content: center;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center;
+
+
+
+  /* 高さを指定 */
+  height: 40px;
+
+  /* 高さの下限を指定 */
+  min-height: 40px;
+
+
+
+  /* 文字色を指定 */
+  color: #aaaaaa;
+
+  /* 文字の大きさを指定 */
+  font-size: 16px;
+
+
+
+  /* スクロール時の揃え位置を指定 */
+  scroll-snap-align: center;
+
+  /* 「scroll-snap-stop」の表示設定を指定 */
+  scroll-snap-stop: always;
+
+  /* 文字選択を制御 */
+  user-select: none;
+
+}
+
+
+
+.wheel-option.selected {
+
+  /* 背景の色やグラデーションを指定 */
+  background: var(--wheel-selected-background);
+
+  /* 文字色を指定 */
+  color: var(--wheel-selected-color);
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 19px;
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+}
+
+
+
+.wheel::before {
+
+  /* 疑似要素に表示する内容を指定 */
+  content: "";
+
+
+
+  /* 要素の位置指定方式を設定 */
+  position: absolute;
+
+  /* 重なり順を指定 */
+  z-index: 2;
+
+
+
+  /* 上端からの位置を指定 */
+  top: 50%;
+
+  /* 左端からの位置を指定 */
+  left: 0;
+
+
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 高さを指定 */
+  height: 40px;
+
+
+
+  /* 要素を移動・変形する */
+  transform: translateY(-50%);
+
+
+
+  /* 「border-top」の表示設定を指定 */
+  border-top: 1px solid #d7c0e8;
+
+  /* 「border-bottom」の表示設定を指定 */
+  border-bottom: 1px solid #d7c0e8;
+
+
+
+  /* マウス・タッチ操作の対象にするか指定 */
+  pointer-events: none;
+
+}
+
+
+
+
+/* ==========================================
+
+   22. 時間設定ダイアログ
+
+========================================== */
+
+
+
+.time-dialog-overlay {
+
+  /* 要素の位置指定方式を設定 */
+  position: fixed;
+
+  /* 上下左右の位置を一括指定 */
+  inset: 0;
+
+  /* 重なり順を指定 */
+  z-index: 9999;
+
+
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center;
+
+  /* 横方向の配置位置を指定 */
+  justify-content: center;
+
+
+
+  /* 要素の内側の余白を指定 */
+  padding: 16px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: transparent;
+
+  /* スクロールの連鎖を制御 */
+  overscroll-behavior: contain;
+
+}
+
+
+
+.time-dialog {
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 横幅の上限を指定 */
+  max-width: 400px;
+
+  /* 要素の内側の余白を指定 */
+  padding: 22px 16px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #ffffff;
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #d8cce2;
+
+  /* 角を丸くする */
+  border-radius: 14px;
+
+
+
+  /* 影を付ける */
+  box-shadow: 0 5px 25px rgba(60, 30, 80, 0.2);
+
+}
+
+
+
+.time-dialog h2 {
+
+  /* 要素の外側の余白を指定 */
+  margin: 0 0 22px;
+
+
+
+  /* 文字色を指定 */
+  color: var(--purple);
+
+  /* 文字の大きさを指定 */
+  font-size: 20px;
+
+  /* 文字の揃え方を指定 */
+  text-align: center;
+
+}
+
+
+
+.time-dialog .dial-time {
+
+  /* 横方向の配置位置を指定 */
+  justify-content: center;
+
+  /* 要素間の余白を指定 */
+  gap: 12px;
+
+}
+
+
+
+.time-dialog .wheel {
+
+  /* 横幅を指定 */
+  width: 76px;
+
+  /* 高さを指定 */
+  height: 180px;
+
+
+
+  /* 縦方向にはみ出した内容の表示方法を指定 */
+  overflow-y: auto;
+
+  /* 横方向にはみ出した内容の表示方法を指定 */
+  overflow-x: hidden;
+
+
+
+  /* スクロール位置を項目に合わせる */
+  scroll-snap-type: y mandatory;
+
+  /* スクロールの連鎖を制御 */
+  overscroll-behavior: contain;
+
+
+
+  /* 「-webkit-overflow-scrolling」の表示設定を指定 */
+  -webkit-overflow-scrolling: touch;
+
+  /* マウスカーソルの形を指定 */
+  cursor: ns-resize;
+
+}
+
+
+
+.time-dialog .wheel-option {
+
+  /* 高さを指定 */
+  height: 40px;
+
+  /* 高さの下限を指定 */
+  min-height: 40px;
+
+}
+
+
+
+.time-dialog .wheel-spacer {
+
+  /* 高さを指定 */
+  height: 70px;
+
+}
+
+
+
+.time-dialog .wheel-spacer:last-child {
+
+  /* 高さを指定 */
+  height: 110px;
+
+}
+
+
+
+.time-dialog .calc-button {
+
+  /* 上側の外側余白を指定 */
+  margin-top: 24px;
+
+}
+
+
+
+

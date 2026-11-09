@@ -1,0 +1,505 @@
+/* 乃木フェス計算ツール / 02-settings.css
+   元のCSSの機能別ブロックを移動し、各設定に日本語コメントを追加しています。 */
+
+/* ==========================================
+
+   5. プレイ方法
+
+========================================== */
+
+
+
+.mode-options {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 並び方向を指定 */
+  flex-direction: column;
+
+  /* 必要に応じて折り返す */
+  flex-wrap: wrap;
+
+
+
+  /* 要素間の余白を指定 */
+  gap: 12px;
+
+  /* 上側の外側余白を指定 */
+  margin-top: 12px;
+
+}
+
+
+
+.mode-options label {
+
+  /* 要素の表示・配置方法を指定 */
+  display: inline-flex;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center;
+
+  /* 要素間の余白を指定 */
+  gap: 8px;
+
+
+
+  /* 文字色を指定 */
+  color: #333333;
+
+  /* 文字の大きさを指定 */
+  font-size: 15px;
+
+  /* マウスカーソルの形を指定 */
+  cursor: pointer;
+
+}
+
+
+
+#settingsScreen input[type="radio"] {
+
+  /* 横幅を指定 */
+  width: 18px;
+
+  /* 高さを指定 */
+  height: 18px;
+
+  /* 要素の外側の余白を指定 */
+  margin: 0;
+
+
+
+  /* ラジオボタンなどの選択色を指定 */
+  accent-color: var(--purple);
+
+  /* マウスカーソルの形を指定 */
+  cursor: pointer;
+
+}
+
+
+
+
+/* ==========================================
+
+   6. 回線速度
+
+========================================== */
+
+
+
+.network-area {
+
+  /* 下側の外側余白を指定 */
+  margin-bottom: 18px;
+
+  /* 要素の内側の余白を指定 */
+  padding: 15px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #f8f3fc;
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #e5d5f0;
+
+  /* 角を丸くする */
+  border-radius: 10px;
+
+}
+
+
+
+.network-area h3 {
+
+  /* 要素の外側の余白を指定 */
+  margin: 0 0 10px;
+
+
+
+  /* 文字色を指定 */
+  color: var(--purple);
+
+  /* 文字の大きさを指定 */
+  font-size: 20px;
+
+}
+
+
+
+.network-options {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 必要に応じて折り返す */
+  flex-wrap: wrap;
+
+  /* 要素間の余白を指定 */
+  gap: 12px;
+
+}
+
+
+
+.network-options label {
+
+  /* 要素の表示・配置方法を指定 */
+  display: inline-flex;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center;
+
+  /* 要素間の余白を指定 */
+  gap: 6px;
+
+
+
+  /* 文字色を指定 */
+  color: #333333;
+
+  /* 文字の大きさを指定 */
+  font-size: 14px;
+
+  /* マウスカーソルの形を指定 */
+  cursor: pointer;
+
+}
+
+
+
+.network-options input[type="radio"] {
+
+  /* 横幅を指定 */
+  width: 17px;
+
+  /* 高さを指定 */
+  height: 17px;
+
+  /* 要素の外側の余白を指定 */
+  margin: 0;
+
+
+
+  /* ラジオボタンなどの選択色を指定 */
+  accent-color: var(--purple);
+
+}
+
+
+
+
+/* ==========================================
+
+   13. プレイ方法切り替え
+
+========================================== */
+
+
+
+.toggle-row {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 並び方向を指定 */
+  flex-direction: row;
+
+  /* 要素間の余白を指定 */
+  gap: 8px;
+
+}
+
+
+
+.toggle-button {
+
+  /* 横幅を指定 */
+  width: 50%;
+
+  /* 高さの下限を指定 */
+  min-height: 44px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #f1edf4;
+
+  /* 文字色を指定 */
+  color: #666666;
+
+
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #ded4e5;
+
+  /* 角を丸くする */
+  border-radius: 8px;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 13px;
+
+  /* マウスカーソルの形を指定 */
+  cursor: pointer;
+
+}
+
+
+
+.toggle-button.active {
+
+  /* 背景の色やグラデーションを指定 */
+  background: var(--purple);
+
+  /* 文字色を指定 */
+  color: #ffffff;
+
+
+
+  /* 枠線の色を指定 */
+  border-color: var(--purple);
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+}
+
+
+
+
+/* ==========================================
+
+   23. イベント日程設定
+
+========================================== */
+
+
+
+.event-schedule-row {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center;
+
+  /* 横方向の配置位置を指定 */
+  justify-content: space-between;
+
+
+
+  /* 要素間の余白を指定 */
+  gap: 12px;
+
+  /* 下側の外側余白を指定 */
+  margin-bottom: 16px;
+
+}
+
+
+
+.event-schedule-input {
+
+  /* 横幅を指定 */
+  width: 55%;
+
+  /* 横幅の上限を指定 */
+  max-width: 220px;
+
+  /* 高さの下限を指定 */
+  min-height: 40px;
+
+
+
+  /* 要素の内側の余白を指定 */
+  padding: 8px;
+
+
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #cccccc;
+
+  /* 角を丸くする */
+  border-radius: 6px;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 16px;
+
+}
+
+
+
+.event-day-settings {
+
+  /* 上側の外側余白を指定 */
+  margin-top: 15px;
+
+  /* 要素の内側の余白を指定 */
+  padding: 12px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #faf7fd;
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #d8c4e8;
+
+  /* 角を丸くする */
+  border-radius: 8px;
+
+}
+
+
+
+.daily-setting-checkbox {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center;
+
+  /* 要素間の余白を指定 */
+  gap: 8px;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 14px;
+
+  /* マウスカーソルの形を指定 */
+  cursor: pointer;
+
+}
+
+
+
+.daily-setting-checkbox input:disabled {
+
+  /* マウスカーソルの形を指定 */
+  cursor: not-allowed;
+
+}
+
+
+
+
+/* ==========================================
+
+   24. イベント日付タブ
+
+========================================== */
+
+
+
+#eventDateTabs,
+
+.event-date-tabs {
+
+  /* 要素の表示・配置方法を指定 */
+  display: grid;
+
+  /* グリッドの列数と幅を指定 */
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+
+
+
+  /* 要素間の余白を指定 */
+  gap: 8px;
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 要素の内側の余白を指定 */
+  padding: 8px 0 12px;
+
+  /* 下側の外側余白を指定 */
+  margin-bottom: 16px;
+
+}
+
+
+
+#eventDateTabs .event-date-tab,
+
+.event-date-tabs .event-date-tab {
+
+  /* 要素の表示・配置方法を指定 */
+  display: block;
+
+
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 横幅の下限を指定 */
+  min-width: 0;
+
+  /* 高さの下限を指定 */
+  min-height: 46px;
+
+  /* 要素の内側の余白を指定 */
+  padding: 8px 2px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #ffffff;
+
+  /* 文字色を指定 */
+  color: var(--purple);
+
+
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid var(--purple);
+
+  /* 角を丸くする */
+  border-radius: 7px;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 14px;
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+  /* 文字の揃え方を指定 */
+  text-align: center;
+
+
+
+  /* テキストの折り返し方法を指定 */
+  white-space: nowrap;
+
+  /* マウスカーソルの形を指定 */
+  cursor: pointer;
+
+}
+
+
+
+#eventDateTabs .event-date-tab.active,
+
+.event-date-tabs .event-date-tab.active {
+
+  /* 背景の色やグラデーションを指定 */
+  background: var(--purple);
+
+  /* 文字色を指定 */
+  color: #ffffff;
+
+}
+
+
+
+

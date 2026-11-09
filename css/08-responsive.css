@@ -1,0 +1,1053 @@
+/* 乃木フェス計算ツール / 08-responsive.css
+   元のCSSの機能別ブロックを移動し、各設定に日本語コメントを追加しています。 */
+
+/* ==========================================
+
+   31. PC・タブレット
+
+   601px以上
+
+========================================== */
+
+
+
+@media (min-width: 601px) {
+
+  .container {
+
+    /* 横幅の上限を指定 */
+    max-width: 430px;
+
+    /* 要素の内側の余白を指定 */
+    padding: 0 12px;
+
+  }
+
+
+
+  #eventSummaryResult .result-day-card {
+
+    /* 要素の内側の余白を指定 */
+    padding: 24px 18px;
+
+  }
+
+
+
+  #eventSummaryResult .result-day-grid {
+
+    /* グリッドの列数と幅を指定 */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    /* 要素間の余白を指定 */
+    gap: 14px;
+
+  }
+
+
+
+  #eventSummaryResult .result-day-item {
+
+    /* 要素の内側の余白を指定 */
+    padding: 18px 12px;
+
+  }
+
+
+
+  #eventSummaryResult .result-day-item > span {
+
+    /* 文字の大きさを指定 */
+    font-size: 15px;
+
+  }
+
+
+
+  #eventSummaryResult .result-day-item > strong {
+
+    /* 文字の大きさを指定 */
+    font-size: 21px;
+
+  }
+
+
+
+  #eventSummaryResult #resultSelectedDay {
+
+    /* 文字の大きさを指定 */
+    font-size: 24px;
+
+  }
+
+}
+
+
+
+
+/* ==========================================
+
+   32. 通常スマホ
+
+   381px〜600px
+
+========================================== */
+
+
+
+@media (min-width: 381px) and (max-width: 600px) {
+
+  .container {
+
+    /* 横幅の上限を指定 */
+    max-width: 100%;
+
+    /* 要素の内側の余白を指定 */
+    padding: 0 12px;
+
+  }
+
+
+
+  .event-schedule-row {
+
+    /* 要素間の余白を指定 */
+    gap: 8px;
+
+  }
+
+
+
+  .event-schedule-input {
+
+    /* 横幅を指定 */
+    width: 60%;
+
+  }
+
+
+
+  #eventSummaryResult .result-day-card {
+
+    /* 要素の内側の余白を指定 */
+    padding: 16px 12px;
+
+  }
+
+
+
+  #eventSummaryResult .result-day-grid {
+
+    /* グリッドの列数と幅を指定 */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    /* 要素間の余白を指定 */
+    gap: 10px;
+
+  }
+
+
+
+  #eventSummaryResult .result-day-item {
+
+    /* 要素の内側の余白を指定 */
+    padding: 14px 10px;
+
+  }
+
+
+
+  #eventSummaryResult .result-day-item > span {
+
+    /* 文字の大きさを指定 */
+    font-size: 14px;
+
+  }
+
+
+
+  #eventSummaryResult .result-day-item > strong {
+
+    /* 文字の大きさを指定 */
+    font-size: 18px;
+
+  }
+
+
+
+  #eventSummaryResult #resultSelectedDay {
+
+    /* 文字の大きさを指定 */
+    font-size: 21px;
+
+  }
+
+}
+
+
+
+
+/* ==========================================
+
+   33. 小型スマホ
+
+   380px以下
+
+========================================== */
+
+
+
+@media (max-width: 380px) {
+
+  .container {
+
+    /* 横幅の上限を指定 */
+    max-width: 100%;
+
+    /* 要素の内側の余白を指定 */
+    padding: 0 8px;
+
+  }
+
+
+
+  .title-banner h1 {
+
+    /* 文字の大きさを指定 */
+    font-size: 18px;
+
+  }
+
+
+
+  #openSettings {
+
+    /* 横幅を指定 */
+    width: 65px;
+
+    /* 高さを指定 */
+    height: 35px;
+
+    /* 文字の大きさを指定 */
+    font-size: 12px;
+
+  }
+
+
+
+  .bonus-time-inputs {
+
+    /* 要素間の余白を指定 */
+    gap: 5px;
+
+  }
+
+
+
+  .bonus-time-unit input {
+
+    /* 横幅を指定 */
+    width: 50px;
+
+  }
+
+
+
+  .bonus-change-controls {
+
+    /* 縦方向の配置位置を指定 */
+    align-items: flex-start;
+
+  }
+
+
+
+  .dial-time {
+
+    /* 要素間の余白を指定 */
+    gap: 7px;
+
+  }
+
+
+
+  .wheel {
+
+    /* 横幅を指定 */
+    width: 54px;
+
+  }
+
+
+
+  .wheel-option {
+
+    /* 文字の大きさを指定 */
+    font-size: 14px;
+
+  }
+
+
+
+  .wheel-option.selected {
+
+    /* 文字の大きさを指定 */
+    font-size: 17px;
+
+  }
+
+
+
+  .time-dialog {
+
+    /* 要素の内側の余白を指定 */
+    padding: 20px 10px;
+
+  }
+
+
+
+  .time-dialog .dial-time {
+
+    /* 要素間の余白を指定 */
+    gap: 7px;
+
+  }
+
+
+
+  .time-dialog .wheel {
+
+    /* 横幅を指定 */
+    width: 68px;
+
+  }
+
+
+
+  .event-schedule-row {
+
+    /* 要素間の余白を指定 */
+    gap: 8px;
+
+  }
+
+
+
+  .event-schedule-input {
+
+    /* 横幅を指定 */
+    width: 60%;
+
+  }
+
+
+
+  .total-point-display strong {
+
+    /* 文字の大きさを指定 */
+    font-size: 28px;
+
+  }
+
+
+
+  #eventSummaryResult .result-day-card {
+
+    /* 要素の内側の余白を指定 */
+    padding: 12px 8px;
+
+  }
+
+
+
+  #eventSummaryResult #resultSelectedDay {
+
+    /* 文字の大きさを指定 */
+    font-size: 19px;
+
+  }
+
+
+
+  #eventSummaryResult .result-day-grid {
+
+    /* グリッドの列数と幅を指定 */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    /* 要素間の余白を指定 */
+    gap: 6px;
+
+  }
+
+
+
+  #eventSummaryResult .result-day-item {
+
+    /* 要素の内側の余白を指定 */
+    padding: 12px 7px;
+
+  }
+
+
+
+  #eventSummaryResult .result-day-item > span {
+
+    /* 文字の大きさを指定 */
+    font-size: 12px;
+
+  }
+
+
+
+  #eventSummaryResult .result-day-item > strong {
+
+    /* 文字の大きさを指定 */
+    font-size: 16px;
+
+  }
+
+
+
+  .result-day-tabs {
+
+    /* 要素間の余白を指定 */
+    gap: 5px;
+
+  }
+
+
+
+  .result-day-tab {
+
+    /* 要素の内側の余白を指定 */
+    padding: 8px 5px;
+
+    /* 文字の大きさを指定 */
+    font-size: 11px;
+
+  }
+
+
+
+  /* ==========================================
+
+   日別獲得ptグラフ 修正
+
+========================================== */
+
+
+
+.daily-chart-scroll {
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 横方向にはみ出した内容の表示方法を指定 */
+  overflow-x: auto;
+
+  /* 縦方向にはみ出した内容の表示方法を指定 */
+  overflow-y: hidden;
+
+}
+
+
+
+/* グラフ全体 */
+
+.daily-point-chart {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 並び方向を指定 */
+  flex-direction: row;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: flex-end;
+
+
+
+  /* 横幅を指定 */
+  width: max-content;
+
+  /* 横幅の下限を指定 */
+  min-width: 100%;
+
+  /* 高さの下限を指定 */
+  min-height: 260px;
+
+
+
+  /* 要素間の余白を指定 */
+  gap: 10px;
+
+  /* 要素の内側の余白を指定 */
+  padding: 25px 10px 10px;
+
+}
+
+
+
+/* 1日分の棒グラフ */
+
+.daily-chart-column {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 並び方向を指定 */
+  flex-direction: column;
+
+  /* 横方向の配置位置を指定 */
+  justify-content: flex-end;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center;
+
+
+
+  /* 伸縮の比率と基本サイズを指定 */
+  flex: 0 0 48px;
+
+
+
+  /* 横幅を指定 */
+  width: 48px;
+
+  /* 高さを指定 */
+  height: 220px;
+
+
+
+  /* 要素間の余白を指定 */
+  gap: 5px;
+
+}
+
+
+
+/* 獲得pt */
+
+.daily-chart-value {
+
+  /* 文字色を指定 */
+  color: #6b21a8;
+
+  /* 文字の大きさを指定 */
+  font-size: 10px;
+
+  /* 文字の揃え方を指定 */
+  text-align: center;
+
+  /* テキストの折り返し方法を指定 */
+  white-space: nowrap;
+
+}
+
+
+
+/* 棒 */
+
+.daily-chart-bar {
+
+  /* 要素の表示・配置方法を指定 */
+  display: block;
+
+
+
+  /* 横幅を指定 */
+  width: 34px;
+
+  /* 高さの下限を指定 */
+  min-height: 2px;
+
+
+
+  background: linear-gradient(
+
+    180deg,
+
+    #a855f7,
+
+    #7e22ce
+
+  );
+
+
+
+  /* 角を丸くする */
+  border-radius: 6px 6px 0 0;
+
+}
+
+
+
+/* 日付 */
+
+.daily-chart-day,
+
+.daily-chart-label {
+
+  /* 文字色を指定 */
+  color: #555555;
+
+  /* 文字の大きさを指定 */
+  font-size: 11px;
+
+  /* テキストの折り返し方法を指定 */
+  white-space: nowrap;
+
+  /* 文字の揃え方を指定 */
+  text-align: center;
+
+}
+
+
+
+/* ==========================================
+
+   Result 日付ボタン
+
+   5列 × 2行
+
+========================================== */
+
+
+
+#eventSummaryResult #resultDayTabs {
+
+  /* 要素の表示・配置方法を指定 */
+  display: grid;
+
+  /* グリッドの列数と幅を指定 */
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+
+
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 要素間の余白を指定 */
+  gap: 8px;
+
+  /* 下側の外側余白を指定 */
+  margin-bottom: 16px;
+
+  /* 要素の内側の余白を指定 */
+  padding: 0;
+
+}
+
+
+
+/* 日付ボタン */
+
+#eventSummaryResult #resultDayTabs button {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center;
+
+  /* 横方向の配置位置を指定 */
+  justify-content: center;
+
+
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 横幅の下限を指定 */
+  min-width: 0;
+
+  /* 高さの下限を指定 */
+  min-height: 42px;
+
+
+
+  /* 要素の内側の余白を指定 */
+  padding: 8px 2px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #ffffff;
+
+  /* 文字色を指定 */
+  color: #7e22ce;
+
+
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #7e22ce;
+
+  /* 角を丸くする */
+  border-radius: 7px;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 13px;
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+
+
+  /* テキストの折り返し方法を指定 */
+  white-space: nowrap;
+
+  /* マウスカーソルの形を指定 */
+  cursor: pointer;
+
+}
+
+
+
+/* 選択中 */
+
+#eventSummaryResult #resultDayTabs button.active {
+
+  /* 背景の色やグラデーションを指定 */
+  background: #7e22ce;
+
+  /* 文字色を指定 */
+  color: #ffffff;
+
+}
+
+
+
+/* 通常スマホ */
+
+@media (min-width: 381px) and (max-width: 600px) {
+
+  #eventSummaryResult #resultDayTabs {
+
+    /* 要素間の余白を指定 */
+    gap: 6px;
+
+  }
+
+
+
+  #eventSummaryResult #resultDayTabs button {
+
+    /* 高さの下限を指定 */
+    min-height: 40px;
+
+    /* 文字の大きさを指定 */
+    font-size: 12px;
+
+  }
+
+}
+
+
+
+/* 小型スマホ */
+
+@media (max-width: 380px) {
+
+  #eventSummaryResult #resultDayTabs {
+
+    /* 要素間の余白を指定 */
+    gap: 4px;
+
+  }
+
+
+
+  #eventSummaryResult #resultDayTabs button {
+
+    /* 高さの下限を指定 */
+    min-height: 38px;
+
+    /* 要素の内側の余白を指定 */
+    padding: 6px 1px;
+
+    /* 文字の大きさを指定 */
+    font-size: 11px;
+
+  }
+
+}
+
+
+
+
+
+
+
+/* ==========================================
+
+   Result 日付ボタン
+
+   全画面共通：5列 × 2行
+
+========================================== */
+
+
+
+#eventSummaryResult #resultDayTabs {
+
+  /* 要素の表示・配置方法を指定 */
+  display: grid !important;
+
+  /* グリッドの列数と幅を指定 */
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+
+
+
+  /* 横幅を指定 */
+  width: 100% !important;
+
+  /* 要素間の余白を指定 */
+  gap: 6px !important;
+
+
+
+  /* 要素の外側の余白を指定 */
+  margin: 0 0 16px !important;
+
+  /* 要素の内側の余白を指定 */
+  padding: 0 !important;
+
+}
+
+
+
+/* 日付ボタン */
+
+#eventSummaryResult #resultDayTabs > * {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex !important;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center !important;
+
+  /* 横方向の配置位置を指定 */
+  justify-content: center !important;
+
+
+
+  /* 横幅を指定 */
+  width: 100% !important;
+
+  /* 横幅の下限を指定 */
+  min-width: 0 !important;
+
+  /* 高さの下限を指定 */
+  min-height: 40px !important;
+
+
+
+  /* 要素の外側の余白を指定 */
+  margin: 0 !important;
+
+  /* 要素の内側の余白を指定 */
+  padding: 6px 2px !important;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 12px !important;
+
+  /* テキストの折り返し方法を指定 */
+  white-space: nowrap;
+
+}
+
+
+
+/* 小型スマホのみ微調整 */
+
+@media (max-width: 380px) {
+
+  #eventSummaryResult #resultDayTabs {
+
+    /* 要素間の余白を指定 */
+    gap: 4px !important;
+
+  }
+
+
+
+  #eventSummaryResult #resultDayTabs > * {
+
+    /* 高さの下限を指定 */
+    min-height: 36px !important;
+
+    /* 文字の大きさを指定 */
+    font-size: 11px !important;
+
+  }
+
+}
+
+
+
+
+
+/* ==========================================
+
+   Result 日付ボタン
+
+   PC・iPhone16・iPhone SE 共通
+
+========================================== */
+
+
+
+/* 日付ボタン全体 */
+
+#eventSummaryResult #resultDayTabs.event-date-tabs {
+
+  /* 要素の表示・配置方法を指定 */
+  display: grid !important;
+
+
+
+  /* グリッドの列数と幅を指定 */
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+
+
+
+  /* 横幅を指定 */
+  width: 100% !important;
+
+  /* 要素間の余白を指定 */
+  gap: 6px !important;
+
+
+
+  /* 要素の外側の余白を指定 */
+  margin: 0 0 16px !important;
+
+  /* 要素の内側の余白を指定 */
+  padding: 0 !important;
+
+}
+
+
+
+/* 各日付ボタン */
+
+#eventSummaryResult #resultDayTabs > button.event-date-tab {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex !important;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center;
+
+  /* 横方向の配置位置を指定 */
+  justify-content: center;
+
+
+
+  /* 横幅を指定 */
+  width: 100% !important;
+
+  /* 横幅の下限を指定 */
+  min-width: 0 !important;
+
+  /* 高さの下限を指定 */
+  min-height: 40px !important;
+
+
+
+  /* 要素の外側の余白を指定 */
+  margin: 0 !important;
+
+  /* 要素の内側の余白を指定 */
+  padding: 6px 2px !important;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #ffffff;
+
+  /* 文字色を指定 */
+  color: #7e22ce;
+
+
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #7e22ce;
+
+  /* 角を丸くする */
+  border-radius: 7px;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 12px !important;
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+
+
+  /* テキストの折り返し方法を指定 */
+  white-space: nowrap;
+
+  /* マウスカーソルの形を指定 */
+  cursor: pointer;
+
+}
+
+
+
+/* 選択中 */
+
+#eventSummaryResult #resultDayTabs > button.active {
+
+  /* 背景の色やグラデーションを指定 */
+  background: #7e22ce;
+
+  /* 文字色を指定 */
+  color: #ffffff;
+
+}
+
+
+
+/* 小型スマホ */
+
+@media (max-width: 380px) {
+
+  #eventSummaryResult #resultDayTabs.event-date-tabs {
+
+    /* 要素間の余白を指定 */
+    gap: 4px !important;
+
+  }
+
+
+
+  #eventSummaryResult #resultDayTabs > button.event-date-tab {
+
+    /* 高さの下限を指定 */
+    min-height: 36px !important;
+
+    /* 文字の大きさを指定 */
+    font-size: 11px !important;
+
+  }
+
+}
+
+
+
+
+
+
+
+
+
+}
+

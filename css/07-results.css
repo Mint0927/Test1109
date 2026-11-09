@@ -1,0 +1,1269 @@
+/* 乃木フェス計算ツール / 07-results.css
+   元のCSSの機能別ブロックを移動し、各設定に日本語コメントを追加しています。 */
+
+/* ==========================================
+
+   18. 旧Result画面
+
+========================================== */
+
+
+
+.result-content {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 並び方向を指定 */
+  flex-direction: column;
+
+  /* 要素間の余白を指定 */
+  gap: 16px;
+
+}
+
+
+
+.result-summary {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 並び方向を指定 */
+  flex-direction: column;
+
+  /* 要素間の余白を指定 */
+  gap: 10px;
+
+
+
+  /* 要素の内側の余白を指定 */
+  padding: 14px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #faf7fc;
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #e8dcef;
+
+  /* 角を丸くする */
+  border-radius: 10px;
+
+}
+
+
+
+.summary-item {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 横方向の配置位置を指定 */
+  justify-content: space-between;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center;
+
+  /* 要素間の余白を指定 */
+  gap: 10px;
+
+}
+
+
+
+.summary-item span {
+
+  /* 文字色を指定 */
+  color: #777777;
+
+  /* 文字の大きさを指定 */
+  font-size: 13px;
+
+}
+
+
+
+.summary-item strong {
+
+  /* 文字色を指定 */
+  color: #333333;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 15px;
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+  /* 文字の揃え方を指定 */
+  text-align: right;
+
+}
+
+
+
+.result-bottom {
+
+  /* 要素の表示・配置方法を指定 */
+  display: grid;
+
+  /* グリッドの列数と幅を指定 */
+  grid-template-columns: minmax(0, 1fr);
+
+  /* 要素間の余白を指定 */
+  gap: 12px;
+
+}
+
+
+
+.result-card {
+
+  /* 横幅の下限を指定 */
+  min-width: 0;
+
+  /* 要素の内側の余白を指定 */
+  padding: 12px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #ffffff;
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #e5d8ed;
+
+  /* 角を丸くする */
+  border-radius: 10px;
+
+}
+
+
+
+.result-card h3 {
+
+  /* 要素の外側の余白を指定 */
+  margin: 0 0 12px;
+
+  /* 要素の内側の余白を指定 */
+  padding: 9px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: var(--purple);
+
+  /* 文字色を指定 */
+  color: #ffffff;
+
+
+
+  /* 角を丸くする */
+  border-radius: 7px;
+
+  /* 文字の大きさを指定 */
+  font-size: 15px;
+
+}
+
+
+
+.result-card p {
+
+  /* 要素の外側の余白を指定 */
+  margin: 7px 0;
+
+
+
+  /* 文字色を指定 */
+  color: #555555;
+
+  /* 文字の大きさを指定 */
+  font-size: 13px;
+
+  /* 行の高さを指定 */
+  line-height: 1.8;
+
+}
+
+
+
+.result-card strong {
+
+  /* 文字色を指定 */
+  color: var(--result-number-color);
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+}
+
+
+
+
+/* ==========================================
+
+   19. 戻るボタン
+
+========================================== */
+
+
+
+.secondary-button {
+
+  /* 要素の表示・配置方法を指定 */
+  display: block;
+
+
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 高さの下限を指定 */
+  min-height: 45px;
+
+  /* 上側の外側余白を指定 */
+  margin-top: 15px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #eee8f2;
+
+  /* 文字色を指定 */
+  color: var(--purple);
+
+
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #d9cce3;
+
+  /* 角を丸くする */
+  border-radius: 9px;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 15px;
+
+  /* マウスカーソルの形を指定 */
+  cursor: pointer;
+
+}
+
+
+
+
+/* ==========================================
+
+   20. イベント推定全体pt
+
+========================================== */
+
+
+
+.total-point-display {
+
+  /* 要素の外側の余白を指定 */
+  margin: 16px 0 24px;
+
+  /* 要素の内側の余白を指定 */
+  padding: 20px 12px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #f3eaff;
+
+  /* 枠線の色や太さを指定 */
+  border: 2px solid var(--purple);
+
+  /* 角を丸くする */
+  border-radius: 12px;
+
+
+
+  /* 文字の揃え方を指定 */
+  text-align: center;
+
+}
+
+
+
+.total-point-label {
+
+  /* 要素の表示・配置方法を指定 */
+  display: block;
+
+  /* 下側の外側余白を指定 */
+  margin-bottom: 8px;
+
+
+
+  /* 文字色を指定 */
+  color: var(--purple);
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 16px;
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+}
+
+
+
+.total-point-display strong {
+
+  /* 文字色を指定 */
+  color: var(--purple);
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 36px;
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+  /* 行の高さを指定 */
+  line-height: 1.3;
+
+
+
+  /* 長い文字列を折り返す */
+  overflow-wrap: anywhere;
+
+}
+
+
+
+.total-point-unit {
+
+  /* 左側の外側余白を指定 */
+  margin-left: 5px;
+
+
+
+  /* 文字色を指定 */
+  color: var(--purple);
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 20px;
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+}
+
+
+
+
+/* ==========================================
+
+   25. 新Result画面
+
+========================================== */
+
+
+
+.event-summary-result {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 並び方向を指定 */
+  flex-direction: column;
+
+
+
+  /* 要素間の余白を指定 */
+  gap: 20px;
+
+  /* 下側の外側余白を指定 */
+  margin-bottom: 24px;
+
+}
+
+
+
+.event-summary-result[hidden] {
+
+  /* 要素の表示・配置方法を指定 */
+  display: none !important;
+
+}
+
+
+
+
+/* ==========================================
+
+   26. 総合獲得ポイント
+
+========================================== */
+
+
+
+.result-total-card {
+
+  /* 要素の内側の余白を指定 */
+  padding: 28px 16px;
+
+
+
+  background: linear-gradient(
+
+    135deg,
+
+    #8b5cf6,
+
+    #a855f7
+
+  );
+
+
+
+  /* 文字色を指定 */
+  color: #ffffff;
+
+
+
+  /* 角を丸くする */
+  border-radius: 16px;
+
+  /* 文字の揃え方を指定 */
+  text-align: center;
+
+
+
+  /* 影を付ける */
+  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.2);
+
+}
+
+
+
+.result-total-card p {
+
+  /* 要素の外側の余白を指定 */
+  margin: 0;
+
+  /* 文字の大きさを指定 */
+  font-size: 14px;
+
+}
+
+
+
+.result-total-value {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 横方向の配置位置を指定 */
+  justify-content: center;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: baseline;
+
+  /* 必要に応じて折り返す */
+  flex-wrap: wrap;
+
+
+
+  /* 要素間の余白を指定 */
+  gap: 8px;
+
+  /* 要素の外側の余白を指定 */
+  margin: 14px 0;
+
+}
+
+
+
+#eventTotalPoints {
+
+  /* 文字の大きさを指定 */
+  font-size: clamp(26px, 7vw, 42px);
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+  /* 長い文字列を折り返す */
+  overflow-wrap: anywhere;
+
+}
+
+
+
+.result-total-unit {
+
+  /* 文字の大きさを指定 */
+  font-size: 18px;
+
+}
+
+
+
+.result-total-period {
+
+  /* 透明度を指定 */
+  opacity: 0.9;
+
+}
+
+
+
+
+/* ==========================================
+
+   27. 日別グラフパネル
+
+========================================== */
+
+
+
+.result-daily-panel {
+
+  /* 横幅の下限を指定 */
+  min-width: 0;
+
+  /* 要素の内側の余白を指定 */
+  padding: 18px 14px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #ffffff;
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid var(--purple-border);
+
+  /* 角を丸くする */
+  border-radius: 14px;
+
+}
+
+
+
+.result-daily-title {
+
+  /* 要素の外側の余白を指定 */
+  margin: 0 0 18px;
+
+
+
+  /* 文字色を指定 */
+  color: #7c3aed;
+
+  /* 文字の大きさを指定 */
+  font-size: 18px;
+
+}
+
+
+
+
+
+
+
+
+/* ==========================================
+
+   28. 日別獲得ptグラフ
+
+========================================== */
+
+
+
+/* 横スクロール領域 */
+
+.daily-chart-scroll {
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 横方向にはみ出した内容の表示方法を指定 */
+  overflow-x: auto;
+
+  /* 縦方向にはみ出した内容の表示方法を指定 */
+  overflow-y: hidden;
+
+}
+
+
+
+/* グラフ全体 */
+
+.point-chart-layout {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: stretch;
+
+
+
+  /* 横幅を指定 */
+  width: max-content;
+
+  /* 横幅の下限を指定 */
+  min-width: 100%;
+
+
+
+  /* 要素の内側の余白を指定 */
+  padding: 15px 0 10px;
+
+}
+
+
+
+/* 縦軸 */
+
+.point-chart-axis {
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 並び方向を指定 */
+  flex-direction: column;
+
+  /* 横方向の配置位置を指定 */
+  justify-content: space-between;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: flex-end;
+
+
+
+  /* 伸縮の比率と基本サイズを指定 */
+  flex: 0 0 75px;
+
+
+
+  /* 高さを指定 */
+  height: 220px;
+
+  /* 右側の内側余白を指定 */
+  padding-right: 8px;
+
+
+
+  /* 文字色を指定 */
+  color: #777777;
+
+  /* 文字の大きさを指定 */
+  font-size: 10px;
+
+}
+
+
+
+/* 棒グラフ領域 */
+
+.point-chart-plot {
+
+  /* 要素の位置指定方式を設定 */
+  position: relative;
+
+
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: flex-end;
+
+
+
+  /* 横幅を指定 */
+  width: max-content;
+
+  /* 横幅の下限を指定 */
+  min-width: 300px;
+
+  /* 高さを指定 */
+  height: 220px;
+
+
+
+  /* 要素の内側の余白を指定 */
+  padding: 0 5px;
+
+
+
+  /* 「border-left」の表示設定を指定 */
+  border-left: 1px solid #dddddd;
+
+  /* 「border-bottom」の表示設定を指定 */
+  border-bottom: 1px solid #dddddd;
+
+}
+
+
+
+/* 補助線 */
+
+.point-chart-grid {
+
+  /* 要素の位置指定方式を設定 */
+  position: absolute;
+
+  /* 上下左右の位置を一括指定 */
+  inset: 0;
+
+
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 並び方向を指定 */
+  flex-direction: column;
+
+  /* 横方向の配置位置を指定 */
+  justify-content: space-between;
+
+
+
+  /* マウス・タッチ操作の対象にするか指定 */
+  pointer-events: none;
+
+}
+
+
+
+.point-chart-grid-line {
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 高さを指定 */
+  height: 1px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #eeeeee;
+
+}
+
+
+
+/* 各日付の棒 */
+
+.point-chart-column {
+
+  /* 要素の位置指定方式を設定 */
+  position: relative;
+
+  /* 重なり順を指定 */
+  z-index: 1;
+
+
+
+  /* 要素の表示・配置方法を指定 */
+  display: flex;
+
+  /* 並び方向を指定 */
+  flex-direction: column;
+
+  /* 横方向の配置位置を指定 */
+  justify-content: flex-end;
+
+  /* 縦方向の配置位置を指定 */
+  align-items: center;
+
+
+
+  /* 伸縮の比率と基本サイズを指定 */
+  flex: 0 0 45px;
+
+
+
+  /* 高さを指定 */
+  height: 220px;
+
+  /* 要素の外側の余白を指定 */
+  margin: 0 4px;
+
+}
+
+
+
+/* 獲得ptの数値 */
+
+.point-chart-value {
+
+  /* 要素の位置指定方式を設定 */
+  position: absolute;
+
+
+
+  /* 左端からの位置を指定 */
+  left: 50%;
+
+
+
+  /* 要素を移動・変形する */
+  transform: translateX(-50%);
+
+
+
+  /* 文字色を指定 */
+  color: #6b21a8;
+
+  /* 文字の大きさを指定 */
+  font-size: 10px;
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+
+
+  /* テキストの折り返し方法を指定 */
+  white-space: nowrap;
+
+}
+
+
+
+/* 棒グラフ */
+
+.point-chart-bar {
+
+  /* 横幅を指定 */
+  width: 28px;
+
+  /* 高さの下限を指定 */
+  min-height: 0;
+
+
+
+  background: linear-gradient(
+
+    180deg,
+
+    #a855f7,
+
+    #7e22ce
+
+  );
+
+
+
+  /* 角を丸くする */
+  border-radius: 5px 5px 0 0;
+
+
+
+  /* 状態変更時のアニメーションを指定 */
+  transition: height 0.3s ease;
+
+}
+
+
+
+/* 日付 */
+
+.point-chart-day {
+
+  /* 要素の位置指定方式を設定 */
+  position: absolute;
+
+
+
+  /* 上端からの位置を指定 */
+  top: 100%;
+
+  /* 左端からの位置を指定 */
+  left: 50%;
+
+
+
+  /* 要素を移動・変形する */
+  transform: translateX(-50%);
+
+
+
+  /* 上側の外側余白を指定 */
+  margin-top: 8px;
+
+
+
+  /* 文字色を指定 */
+  color: #555555;
+
+  /* 文字の大きさを指定 */
+  font-size: 11px;
+
+
+
+  /* テキストの折り返し方法を指定 */
+  white-space: nowrap;
+
+}
+
+
+
+/* ==========================================
+
+   通常スマホ・小型スマホ
+
+========================================== */
+
+
+
+@media (max-width: 600px) {
+
+  .point-chart-axis {
+
+    /* 伸縮前の基本幅を指定 */
+    flex-basis: 70px;
+
+    /* 文字の大きさを指定 */
+    font-size: 9px;
+
+  }
+
+
+
+  .point-chart-column {
+
+    /* 伸縮前の基本幅を指定 */
+    flex-basis: 42px;
+
+    /* 要素の外側の余白を指定 */
+    margin: 0 3px;
+
+  }
+
+
+
+  .point-chart-bar {
+
+    /* 横幅を指定 */
+    width: 25px;
+
+  }
+
+
+
+  .point-chart-value {
+
+    /* 文字の大きさを指定 */
+    font-size: 9px;
+
+  }
+
+}
+
+
+
+@media (max-width: 380px) {
+
+  .point-chart-axis {
+
+    /* 伸縮前の基本幅を指定 */
+    flex-basis: 65px;
+
+  }
+
+
+
+  .point-chart-column {
+
+    /* 伸縮前の基本幅を指定 */
+    flex-basis: 38px;
+
+    /* 要素の外側の余白を指定 */
+    margin: 0 3px;
+
+  }
+
+
+
+  .point-chart-bar {
+
+    /* 横幅を指定 */
+    width: 23px;
+
+  }
+
+}
+
+
+
+
+
+
+
+
+/* ==========================================
+
+   29. Result日付切り替え
+
+========================================== */
+
+
+
+
+
+/* ==========================================
+
+   Result 日付切り替え
+
+   PC・通常スマホ・小型スマホ共通
+
+========================================== */
+
+
+
+.result-day-tabs {
+
+  /* 要素の表示・配置方法を指定 */
+  display: grid;
+
+  /* グリッドの列数と幅を指定 */
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+
+
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 要素間の余白を指定 */
+  gap: 6px;
+
+  /* 下側の外側余白を指定 */
+  margin-bottom: 16px;
+
+  /* 要素の内側の余白を指定 */
+  padding: 0;
+
+}
+
+
+
+
+
+.result-day-tab {
+
+  /* 要素の内側の余白を指定 */
+  padding: 8px 12px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #ffffff;
+
+  /* 文字色を指定 */
+  color: #7c3aed;
+
+
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid var(--purple-border);
+
+  /* 角を丸くする */
+  border-radius: 8px;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 13px;
+
+  /* マウスカーソルの形を指定 */
+  cursor: pointer;
+
+}
+
+
+
+.result-day-tab.active {
+
+  /* 背景の色やグラデーションを指定 */
+  background: var(--purple);
+
+  /* 文字色を指定 */
+  color: #ffffff;
+
+  /* 枠線の色を指定 */
+  border-color: var(--purple);
+
+}
+
+
+
+
+/* ==========================================
+
+   30. Result日別詳細
+
+========================================== */
+
+
+
+#eventSummaryResult .result-day-card {
+
+  /* 横幅を指定 */
+  width: 100%;
+
+  /* 要素の内側の余白を指定 */
+  padding: 20px 14px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #faf5ff;
+
+  /* 角を丸くする */
+  border-radius: 14px;
+
+}
+
+
+
+#eventSummaryResult #resultSelectedDay {
+
+  /* 要素の外側の余白を指定 */
+  margin: 0 0 18px;
+
+
+
+  /* 文字色を指定 */
+  color: #7e22ce;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 23px;
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+}
+
+
+
+#eventSummaryResult .result-day-grid {
+
+  /* 要素の表示・配置方法を指定 */
+  display: grid;
+
+  /* グリッドの列数と幅を指定 */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  /* 要素間の余白を指定 */
+  gap: 12px;
+
+}
+
+
+
+#eventSummaryResult .result-day-item {
+
+  /* 横幅の下限を指定 */
+  min-width: 0;
+
+  /* 要素の内側の余白を指定 */
+  padding: 16px 12px;
+
+
+
+  /* 背景の色やグラデーションを指定 */
+  background: #ffffff;
+
+  /* 枠線の色や太さを指定 */
+  border: 1px solid #e9d5ff;
+
+  /* 角を丸くする */
+  border-radius: 12px;
+
+}
+
+
+
+#eventSummaryResult .result-day-item > span {
+
+  /* 要素の表示・配置方法を指定 */
+  display: block;
+
+
+
+  /* 文字色を指定 */
+  color: #7e22ce;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 15px;
+
+  /* 文字の太さを指定 */
+  font-weight: 600;
+
+}
+
+
+
+#eventSummaryResult .result-day-item > strong {
+
+  /* 要素の表示・配置方法を指定 */
+  display: block;
+
+  /* 上側の外側余白を指定 */
+  margin-top: 10px;
+
+
+
+  /* 文字色を指定 */
+  color: #6b21a8;
+
+
+
+  /* 文字の大きさを指定 */
+  font-size: 20px;
+
+  /* 文字の太さを指定 */
+  font-weight: 700;
+
+  /* 行の高さを指定 */
+  line-height: 1.5;
+
+
+
+  /* 数字の幅を揃える */
+  font-variant-numeric: tabular-nums;
+
+  /* 長い文字列を折り返す */
+  overflow-wrap: anywhere;
+
+}
+
+
+
+#eventSummaryResult .result-day-item > strong span {
+
+  /* 文字色を指定 */
+  color: inherit;
+
+  /* 文字の大きさを指定 */
+  font-size: inherit;
+
+  /* 文字の太さを指定 */
+  font-weight: inherit;
+
+}
+
+
+
+
