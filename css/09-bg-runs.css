@@ -55,3 +55,14 @@
 #eventDateTabs .event-date-tab .decision-tab-icon {display:block;font-size:19px;line-height:1.2;font-weight:800;}
 #eventDateTabs .event-date-tab.decision-success .decision-tab-icon {color:#15803d;}
 #eventDateTabs .event-date-tab.decision-error .decision-tab-icon {color:#dc2626;}
+
+/* 時間ホイールに戻したUI */
+.bg-wheel-trigger{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;min-height:52px;padding:12px 14px;background:#f8f3ff;border:1.5px solid #b79adf;border-radius:10px;color:#602c9e;font-size:16px;font-weight:700;cursor:pointer}
+.bg-wheel-trigger span:last-child{font-size:13px;color:#7b42b5}
+.bg-wheel-trigger:disabled{opacity:.55;cursor:not-allowed}
+.wheel-adjustment-hint{text-align:center;font-size:13px;line-height:1.5;margin:12px 0;color:#6a388e}
+.wheel{scroll-snap-type:y proximity;touch-action:pan-y;scroll-behavior:auto}
+.wheel-option{cursor:pointer;user-select:none;-webkit-user-select:none;scroll-snap-align:center}
+.wheel-option:active{color:#7432b0}
+
+.realtime-controls{border:1px solid #d9b8ff;border-radius:12px;padding:14px;margin:10px 0 18px;background:#faf6ff}.realtime-controls label{display:block;font-weight:700;margin-bottom:8px}.realtime-controls input{font:inherit;padding:9px;border:1px solid #bb9bdd;border-radius:8px;max-width:180px}.realtime-controls p{margin:8px 0 0;font-size:.9rem}#currentClockInfo{font-weight:600;color:#69249c}

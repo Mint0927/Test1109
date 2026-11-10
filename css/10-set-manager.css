@@ -1,0 +1,13 @@
+.set-manager{margin:18px 0}.set-manager .panel-content>p{font-size:13px;line-height:1.7}.set-carry,.set-latest{padding:12px;background:#f5edff;border:1px solid #d9b8ff;border-radius:10px;color:#632b99;overflow-wrap:anywhere}.set-manager h3{font-size:15px;color:var(--purple);margin:18px 0 8px}.set-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.set-buttons button{flex:1;min-width:130px;padding:10px 8px;border:1px solid #c9b3dc;border-radius:8px;background:#f6f1fa;color:#61248e;cursor:pointer}.set-history{display:grid;gap:9px}.set-history-item{padding:12px;border:1px solid #e4d5ef;border-radius:9px;background:#fcf9ff;font-size:13px}.set-history-item p{margin:6px 0 0;line-height:1.6}.set-manager [hidden]{display:none!important}
+
+.set-history-day{margin:12px 0;padding:12px;border:1px solid #dfc8f3;border-radius:12px;background:#faf6ff}.set-history-day h3{margin:0 0 10px;color:var(--purple);font-size:16px}.set-history-empty,.set-today-note{font-size:13px;color:#666}.set-history-day .set-history-item+.set-history-item{margin-top:8px}#setResultPanel[hidden]{display:none!important}
+
+.set-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}.set-stats>div{padding:14px;background:#f5edff;border-radius:10px;border:1px solid #dfc8f3}.set-stats span{display:block;font-size:12px;color:#69577a}.set-stats strong{display:block;font-size:clamp(17px,3.8vw,24px);color:#61248e;margin-top:6px;overflow-wrap:anywhere}.set-history-caption{font-size:12px;color:#666}.set-day-tabs{display:flex;gap:7px;overflow-x:auto;padding:8px 0}.set-day-tab{flex:0 0 auto;border:1px solid #d9b8ff;border-radius:9px;background:white;color:#672c91;padding:9px 11px;cursor:pointer}.set-day-tab.active{background:#7926b9;color:white}.set-day-detail{border:1px solid #dfc8f3;border-radius:10px;padding:14px;margin:10px 0;background:#faf6ff}.set-day-detail h3{margin:0 0 8px}.set-day-total{font-size:18px;font-weight:700;color:#61248e}.set-detail-row{white-space:pre-line;line-height:1.8;font-size:13px;border-top:1px solid #e4d5ef;padding-top:9px;margin-top:9px}@media(max-width:450px){.set-stats{grid-template-columns:1fr}}
+
+.set-result-line{margin:5px 0;line-height:1.6;overflow-wrap:anywhere}.set-result-line strong{color:#61248e}.set-detail-row .set-result-line:nth-child(6){font-weight:700;font-size:16px;border-top:1px solid #e4d5ef;padding-top:8px}
+
+/* セット履歴表示では予測の総合カードを非表示にし、日別グラフと日別結果を表示 */
+#eventSummaryResult.set-history-mode > .result-total-card {display:none;}
+#eventSummaryResult.set-history-mode > .panel-title {display:none;}
+.result-set-day-extra {margin:12px 0 0;padding:12px;border:1px solid #e4d3ff;border-radius:12px;background:#fff;}
+.result-set-day-extra .set-result-line {margin:5px 0;overflow-wrap:anywhere;}
