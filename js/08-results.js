@@ -146,16 +146,25 @@ function renderDailyResultDetails(days) {
       `${index + 1}日目`;
 
     document.getElementById("resultNormalBgTime").textContent =
-      secToTime(setting?.normalBg ?? 0);
+      secToTime(day.normalBgSeconds ?? setting?.normalBg ?? 0);
 
     document.getElementById("resultEventBgTime").textContent =
-      secToTime(setting?.eventBg ?? 0);
+      secToTime(day.eventBgSeconds ?? setting?.eventBg ?? 0);
 
     document.getElementById("resultEarnedItems").textContent =
       Math.floor(day.totalItems ?? 0).toLocaleString();
 
     document.getElementById("resultDailyPoints").textContent =
       Math.floor(day.dailyPoint ?? 0).toLocaleString();
+    const extra=document.getElementById("resultSetDayExtra");
+    if(extra){
+      extra.replaceChildren();
+      if(day.calculated){
+        const p=document.createElement("p");
+        p.textContent=`就寝前 ${Math.floor(day.preBedPoints||0).toLocaleString()} pt ＋ 夜間イベントBG ${Math.floor(day.nightPoints||0).toLocaleString()} pt ＝ ${Math.floor(day.dailyPoint||0).toLocaleString()} pt（予測）`;
+        extra.appendChild(p);
+      }
+    }
 
     tabs.querySelectorAll(".result-day-tab").forEach(
       (button, buttonIndex) => {
@@ -192,8 +201,17 @@ function showEventSummaryResult(projection) {
     return;
   }
 
-  const days = projection.days;
-
+  // 予測Resultはセット履歴とは別。表示時点のプレイ入力を使って独立計算。
+  if(typeof window.calculateIndependentDailyForecast==='function' && getSelectedPlayMode()==='both'){
+    try {
+      const independent=window.calculateIndependentDailyForecast();
+      if(independent?.days?.length)projection=independent;
+    } catch(error) {
+      showCalculationError('日別予測の計算に失敗しました：'+error.message);
+      return;
+    }
+  }
+  const days=projection.days;
   // 総合獲得ポイント
   const totalPoints = days.reduce(
     (total, day) =>
@@ -246,12 +264,13 @@ function runCalculation() {
 
   saveCurrentDayInputs();
   if (mode === "both") {
-    for (let i=0;i<eventDateList.length;i++) {
-      const effective=i>0&&!dailySettings[i]?.useOwnSettings?0:i;
-      if(confirmedDaySignatures.get(effective)!==daySignature(effective)) {
-        showCalculationError(`${i+1}日目の設定が未確定です。日付タブで「この日の設定を決定」を押してください。`);
-        return;
-      }
+    // 未来の日付まで確定を要求しない。現在選択中の日だけを確認する。
+    // 設定未変更の日は既存の初日設定の引き継ぎ機能で計算する。
+    const selected = selectedEventDayIndex;
+    const effective = selected > 0 && !dailySettings[selected]?.useOwnSettings ? 0 : selected;
+    if (confirmedDaySignatures.get(effective) !== daySignature(effective)) {
+      showCalculationError(`${selected+1}日目の設定が未確定です。「この日の設定を決定」を押してください。`);
+      return;
     }
   }
 

@@ -38,27 +38,19 @@ function formatBgDuration(seconds) {
   return `${Math.floor(s / 3600)}時間${String(Math.floor(s % 3600 / 60)).padStart(2,"0")}分${String(s % 60).padStart(2,"0")}秒`;
 }
 
-function updateBgRunsUI() {
-  const hours = Math.max(0, Number($("bgGuideHours")?.value || 3));
-  const guideSeconds = hours * 3600;
-  for (const [key, prefix] of [["normalBg","normalBg"],["eventBg","eventBg"]]) {
-    const duration = bgSongSeconds(key);
-    const runs = duration > 0
-      ? Math.floor((guideSeconds + standbyBackground) / (duration + standbyBackground))
-      : 0;
-    $(prefix + "GuideRuns").textContent = String(runs);
-    $(prefix + "SongDuration").textContent = duration > 0
-      ? `${Math.floor(duration / 60)}分${String(duration % 60).padStart(2,"0")}秒`
-      : "未設定";
-    $(prefix + "GuideDuration").textContent = duration > 0
-      ? formatBgDuration(bgSecondsForRuns(key, runs)) : "--";
-    $(prefix + "RequiredTime").textContent = formatBgDuration(bgSecondsForRuns(key, readBgRuns(key)));
-  }
-  const total = bgSecondsForRuns("normalBg", readBgRuns("normalBg")) +
-    bgSecondsForRuns("eventBg", readBgRuns("eventBg"));
-  $("bgRunsTotalTime").textContent = formatBgDuration(total);
-  $("dailyTimeTotal").textContent = `BG合計：${formatBgDuration(total)} / ${typeof getEventDaySeconds === "function" && eventDateList.length ? getEventDaySeconds(selectedEventDayIndex) / 3600 : 24}時間`;
-  $("dailyTimeTotal").style.color = total > (eventDateList.length ? getEventDaySeconds(selectedEventDayIndex) : MAX_DAILY_SECONDS) ? "#d00000" : "#7926b9";
+function updateBgRunsUI(){
+ let total=0;
+ for(const key of ["normalBg","eventBg"]){
+  const runs=readBgRuns(key);
+  const seconds=bgSecondsForRuns(key,runs);
+  total+=seconds;
+  const duration=$(key+"RequiredTime");if(duration)duration.textContent=formatBgDuration(seconds);
+  const count=$(key+"GuideRuns");if(count)count.textContent=String(runs);
+ }
+ $("bgRunsTotalTime").textContent=formatBgDuration(total);
+ const limit=eventDateList.length?getEventDaySeconds(selectedEventDayIndex):MAX_DAILY_SECONDS;
+ $("dailyTimeTotal").textContent=`BG合計：${formatBgDuration(total)} / ${formatBgDuration(limit)}`;
+ $("dailyTimeTotal").style.color=total>limit?"#d00000":"#7926b9";
 }
 
 function syncBgRunsToLegacy() {
@@ -78,34 +70,14 @@ function applyBgRunsForDay(setting) {
   syncBgRunsToLegacy();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-for (const key of ["normalBg", "eventBg"]) {
-  $(key + "Runs").addEventListener("input", () => {
-    const input = $(key + "Runs");
-    const count = Number(input.value);
-    if (input.value !== "" && (!Number.isSafeInteger(count) || count < 0)) {
-      input.setCustomValidity("プレイ回数は0以上の整数で入力してください。");
-    } else {
-      input.setCustomValidity("");
-    }
-    syncBgRunsToLegacy();
-    saveCurrentDayInputs();
-    saveLocalData();
-    resetResult();
-    hideDailyCheckStatus();
+document.addEventListener("DOMContentLoaded",()=>{
+ // 保存済みの回数を時間ホイールに反映
+ if(dailySettings.length)applyDayInputs(selectedEventDayIndex);
+ else syncBgRunsToLegacy();
+ for(const id of ["normalSong","eventMin","eventSec"]){
+  $(id).addEventListener("change",()=>{
+   // 曲時間が変わった場合も保存済みの回数から所要時間を再計算
+   syncBgRunsToLegacy();saveCurrentDayInputs();saveLocalData();
   });
-}
-$("bgGuideHours").addEventListener("change", updateBgRunsUI);
-for (const id of ["normalSong", "eventMin", "eventSec"]) {
-  $(id).addEventListener("input", () => {
-    syncBgRunsToLegacy();
-    saveCurrentDayInputs();
-    saveLocalData();
-    hideDailyCheckStatus();
-  });
-  $(id).addEventListener("change", updateBgRunsUI);
-}
-// 保存済み日別設定を選択中の入力欄に反映
-if (dailySettings.length) applyDayInputs(selectedEventDayIndex);
-else syncBgRunsToLegacy();
+ }
 });

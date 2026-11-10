@@ -328,6 +328,8 @@ function applyDayInputs(index) {
 
   $("normalBgRuns").disabled = inherited;
   $("eventBgRuns").disabled = inherited;
+  $("openNormalBgTime").disabled = inherited;
+  $("openEventBgTime").disabled = inherited;
 }
 
 // ===================================
@@ -344,33 +346,27 @@ function renderEventDateTabs() {
   tabsArea.innerHTML = "";
   settingsArea.innerHTML = "";
 
-  // 日付タブを作成
-  eventDateList.forEach((item, index) => {
-
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "event-date-tab";
-
-    if (index === selectedEventDayIndex) {
-      button.classList.add("active");
-    }
-
-    const [, month, day] = item.date.split("-");
-
-    button.textContent = `${Number(month)}/${Number(day)}`;
-
-button.addEventListener("click", () => {
-  saveCurrentAppSettings();
-
-  selectedEventDayIndex = index;
-
-  applyDayInputs(index);
-  renderEventDateTabs();
-  refreshDailyConfirmationStatus();
-});
-
+  // プレイ画面の日付は本日のみ。日付変更時は自動で選択日を切り替える。
+  const now = new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  const todayIndex = eventDateList.findIndex(item=>item.date===today);
+  if (todayIndex >= 0 && todayIndex !== selectedEventDayIndex) {
+    saveCurrentDayInputs();
+    selectedEventDayIndex = todayIndex;
+    applyDayInputs(todayIndex);
+  }
+  if (todayIndex >= 0) {
+    const item=eventDateList[todayIndex];
+    const button=document.createElement('button');button.type='button';
+    button.className='event-date-tab active';
+    const [,month,day]=item.date.split('-');
+    button.textContent=`${Number(month)}/${Number(day)}（本日）`;
+    button.disabled=true;
     tabsArea.appendChild(button);
-  });
+  } else {
+    const label=document.createElement('p');label.className='set-today-note';
+    label.textContent='本日はイベント期間外です。';tabsArea.appendChild(label);
+  }
 
   updateDateTabStatuses();
 
@@ -422,7 +418,11 @@ checkbox.addEventListener("change", () => {
   updateMixedPreview();
 
   // 保存
-  invalidateDailyConfirmation();
+  // この日だけを未確定にする。初日や他の日の確認結果は残す。
+  confirmedDaySignatures.delete(selectedEventDayIndex);
+  failedDaySignatures.delete(selectedEventDayIndex);
+  updateDateTabStatuses();
+  refreshDailyConfirmationStatus();
   saveLocalData();
 
 });
@@ -445,3 +445,14 @@ checkbox.addEventListener("change", () => {
 /* ==========================================
    入力変更時の自動保存
 ========================================== */
+
+// 日付が変わった瞬間にプレイ画面の日付を更新する。
+(() => {
+  let date = new Date().toDateString();
+  setInterval(() => {
+    const current = new Date().toDateString();
+    if (current === date) return;
+    date = current;
+    if (eventDateList.length) renderEventDateTabs();
+  }, 1000);
+})();

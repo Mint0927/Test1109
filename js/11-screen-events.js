@@ -23,35 +23,27 @@ $("confirmTimeDialog").addEventListener(
 // 共通ホイールイベント
 // ===================================
 
-["Hour", "Min", "Sec"].forEach(unit => {
-
-  const wheel = $(dialogWheelIds[unit]);
-
-  let scrollTimer;
-
-  wheel.addEventListener("scroll", () => {
-
-    clearTimeout(scrollTimer);
-
-    scrollTimer = setTimeout(() => {
-
-      if (!activeWheelKey) {
-        return;
-      }
-
-      const value = updateWheelHighlight(wheel);
-
-      updateWheelValueFromScroll(
-        unit,
-        value
-      );
-
-    }, 80);
-
-  });
-
+["Hour","Min","Sec"].forEach(unit=>{
+ const wheel=$(dialogWheelIds[unit]);
+ wheel.addEventListener("scroll",()=>{
+  if(wheelInternalScroll)return;
+  wheelScrollChanged(unit);
+ },{passive:true});
+ // マウスホイールを少し速める
+ wheel.addEventListener("wheel",event=>{
+  event.preventDefault();
+  wheel.scrollTop+=Math.sign(event.deltaY)*Math.max(40,Math.abs(event.deltaY)*1.65);
+ },{passive:false});
+ // 中央以外の数字もタップで直接選択
+ wheel.addEventListener("click",event=>{
+  const option=event.target.closest(".wheel-option");if(!option)return;
+  const options=[...wheel.querySelectorAll(".wheel-option")];
+  const index=options.indexOf(option);
+  if(index<0)return;
+  wheel.scrollTo({top:index*wheelRows,behavior:"smooth"});
+  updateWheelValueFromScroll(unit,Number(option.dataset.value));
+ });
 });
-
 
 // ===================================
 // 背景操作のロック
