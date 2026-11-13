@@ -15,6 +15,9 @@
   <link rel="stylesheet" href="css/08-responsive.css">
   <link rel="stylesheet" href="css/09-bg-runs.css">
   <link rel="stylesheet" href="css/10-set-manager.css">
+  <link rel="stylesheet" href="css/11-improvements.css">
+  <link rel="stylesheet" href="css/12-daily-ui.css">
+  <link rel="stylesheet" href="css/13-forecast-result.css">
 
   <script src="js/01-core.js" defer></script>
   <script src="js/02-bonus.js" defer></script>
@@ -32,14 +35,31 @@
   <script src="js/15-realtime-bedtime.js" defer></script>
   <script src="js/13-autosave-init.js" defer></script>
   <script src="js/16-set-manager.js" defer></script>
+  <script src="js/17-improvements.js" defer></script>
+  <script src="js/18-daily-ui.js" defer></script>
+  <script src="js/19-forecast-result.js" defer></script>
+  <script src="js/20-redesign.js" defer></script>
+  <script src="js/21-settings-layout.js" defer></script>
+  <link rel="stylesheet" href="css/14-redesign.css">
+  <link rel="stylesheet" href="css/15-settings-layout.css">
+  <link rel="stylesheet" href="css/16-visual-correction.css">
 
 </head>
 <body>
-<main class="container">
+<div class="app-shell">
+  <aside class="app-sidebar" aria-label="メインメニュー">
+    <div class="sidebar-brand">乃木フェス<br>シミュレーター</div>
+    <button type="button" data-nav="play">▤<span>プレイ</span></button>
+    <button type="button" data-nav="result">▥<span>Result</span></button>
+    <button type="button" data-nav="settings">⚙<span>設定</span></button>
+    <button type="button" data-nav="history">▦<span>セット履歴</span></button>
+    <button type="button" data-nav="help">?<span>使い方</span></button>
+  </aside>
+<main class="container app-content">
 
   <header class="title-banner">
-    <h1>乃木フェス計算ツール</h1>
-    <button id="openSettings" type="button">設定</button>
+    <h1>乃木フェス イベントシミュレーター</h1>
+    <span id="currentEventDay" class="current-event-day" aria-live="polite"></span><span id="headerLiveClock" class="header-clock" aria-label="現在時刻"></span><button id="openSettings" type="button" hidden>設定</button>
   </header>
 
   <!-- =========================
@@ -50,8 +70,8 @@
         <!-- =========================
          イベント日程設定
     ========================== -->
-    <section class="panel">
-      <h2 class="panel-title">イベント日程</h2>
+    <section class="panel" id="eventPeriodPanel">
+      <h2 class="panel-title">イベント日程（初回のみ）</h2>
 
       <div class="panel-content">
 
@@ -92,16 +112,10 @@
 
     <section class="panel">
       <h2 class="panel-title">プレイ方法</h2>
-      <div class="panel-content mode-options">
-        <label>
-  <input type="radio" name="playMode" value="fullManual">
-  理論値／フルバクグラ
-</label>
-
-<label>
-  <input type="radio" name="playMode" value="both" checked>
-  手打ち＆バクグラ
-</label>
+      <div class="panel-content mode-options mode-three">
+        <label class="legacy-manual-mode" hidden><input type="radio" name="playMode" value="fullManual"> フル手打ち</label>
+        <label><input type="radio" name="playMode" value="fullBackground"> フルバックグラウンド</label>
+        <label><input type="radio" name="playMode" value="both" checked> 手打ち＆バックグラウンド</label>
       </div>
     </section>
 
@@ -244,7 +258,7 @@
   </div>
 
 
-    <section id="fullModeArea" class="panel">
+    <section id="fullModeArea" class="panel" hidden>
       <h2 class="panel-title">プレイ方法</h2>
 
       <div class="panel-content toggle-row">
@@ -270,6 +284,10 @@
       </div>
     </section>
 
+    <section id="singleSleepArea" class="panel" hidden>
+      <h2 class="panel-title">睡眠設定</h2>
+      <div class="compact-time-grid"><label>就寝 <input id="singleBedtime" type="time" value="23:00"></label><label>起床 <input id="singleWakeTime" type="time" value="07:00"></label></div>
+    </section>
     <section id="accuracyArea" class="panel accuracy-panel">
       <h2 class="panel-title">精度</h2>
 
@@ -311,28 +329,27 @@
     <section id="mixedTimeArea" class="panel mixed-panel" hidden>
       <h2 class="panel-title">就寝までのバックグラウンド設定</h2>
       <div class="panel-content">
-        <h3 class="bg-runs-heading">就寝までのBG時間を設定</h3>
+        <h3 class="bg-runs-heading">項目ごとにBG時間を設定</h3>
         <div class="realtime-controls">
           <label for="bedtimeInput">就寝時刻</label>
-          <input id="bedtimeInput" type="time" value="23:00" step="60">
+          <input id="bedtimeInput" type="time" value="23:00" step="60"><label for="wakeTimeInput">起床時刻</label><input id="wakeTimeInput" type="time" value="07:00" step="60">
           <p id="currentClockInfo" aria-live="polite"></p>
           <p class="bg-guide-note">現在時刻から次の就寝時刻までを基準に判定します。就寝後のイベント曲BGは別枠です。</p>
         </div>
-        <p class="bg-guide-note">ホイールで目安時間を選択すると、曲を最後までプレイできる時間に自動調整します。</p>
-        <div class="bg-runs-grid">
-          <div class="bg-runs-card">
-            <label for="openNormalBgTime">通常曲BG</label>
-            <button id="openNormalBgTime" class="bg-wheel-trigger" type="button"><span id="normalBgTimeText">0時間 0分 0秒</span><span aria-hidden="true">変更</span></button>
-            <p>自動調整後：<output id="normalBgRequiredTime">0時間00分00秒</output></p>
-            <p>プレイ可能回数：<strong><output id="normalBgGuideRuns">0</output>回</strong></p>
+        <p class="bg-guide-note">項目ごとに時間を入力し、曲単位で切り下げて確定します。</p>
+        <section class="bg-activities" id="bgActivities">
+          <h3>BG項目を1つずつ設定</h3>
+          <p class="bg-activities-hint">仕事・食事などを登録し、通常曲BGかイベント曲BGのどちらかを選んで「この項目を決定」を押してください。</p>
+          <div id="bgActivityList" class="bg-activity-list"></div>
+          <div class="bg-entry-form">
+            <label for="bgItemName">項目名</label><input id="bgItemName" type="text" placeholder="例：仕事" maxlength="40">
+            <label for="bgItemMode">BG種類</label><select id="bgItemMode"><option value="normal">通常曲BG</option><option value="event">イベント曲BG</option></select>
+            <label for="bgItemDuration">実行時間（時:分:秒）</label><input id="bgItemDuration" type="text" inputmode="numeric" value="03:00:00" placeholder="03:00:00">
+            <p id="bgItemLimit" class="bg-activities-hint"></p>
+            <button type="button" id="confirmBgItem" class="secondary-button">この項目を決定</button>
+            <p id="bgActivityError" role="alert"></p>
           </div>
-          <div class="bg-runs-card">
-            <label for="openEventBgTime">イベント曲BG</label>
-            <button id="openEventBgTime" class="bg-wheel-trigger" type="button"><span id="eventBgTimeText">0時間 0分 0秒</span><span aria-hidden="true">変更</span></button>
-            <p>自動調整後：<output id="eventBgRequiredTime">0時間00分00秒</output></p>
-            <p>プレイ可能回数：<strong><output id="eventBgGuideRuns">0</output>回</strong></p>
-          </div>
-        </div>
+        </section>
         <div hidden aria-hidden="true">
           <input id="normalBgRuns" type="number" value="0">
           <input id="eventBgRuns" type="number" value="0">
@@ -345,6 +362,10 @@
         <p id="dailyTimeTotal" class="daily-total">BG合計：0時間00分00秒 / 24時間</p>
         <button id="confirmDailySettings" type="button" class="bg-confirm-button">この日の設定を決定</button>
         <div id="dailyCheckStatus" class="daily-check-status" role="status" aria-live="polite" hidden></div>
+        <section class="day-set-output" id="daySetOutput" aria-live="polite">
+          <h3>この日の計算結果</h3>
+          <p id="daySetOutputText">「この日の設定を決定」を押すと、1セットの計算結果をここに表示します。</p>
+        </section>
         <p class="time-note">BGの自動調整後の時間を優先し、残り時間で手打ちを計算します。</p>
       </div>
     </section>
@@ -397,7 +418,7 @@
 </div>
 
 
-    <section class="panel set-manager" id="oneSetManager">
+    <section class="panel set-manager" id="oneSetManager" hidden aria-hidden="true">
       <h2 class="panel-title">1セット管理（新機能）</h2>
       <div class="panel-content">
         <p>従来の「計測」はそのまま利用できます。初日はイベント開始15:00から、2日目以降は前回の夜間BG終了から計算します。就寝前の獲得ptと就寝後のイベントBG獲得ptを合算して1セットにします。計測ボタンを押した時刻は計算に使用しません。</p>
@@ -439,7 +460,7 @@
   </section>
     <!-- イベント総合結果 -->
 <div id="eventSummaryResult" class="event-summary-result" hidden>
-  <h2 class="panel-title">Result（従来の全日程予測）</h2>
+  <h2 class="panel-title">総合結果</h2>
 
   <!-- 総合獲得ポイント -->
   <section class="result-total-card">
@@ -449,6 +470,12 @@
       <span class="result-total-unit">pt</span>
     </div>
     <p id="eventTotalDays" class="result-total-period"></p>
+  </section>
+
+  <section class="result-daily-panel" aria-label="日別獲得ポイント">
+    <h2 class="result-daily-title">日別獲得ポイント</h2>
+    <div id="dailyPointList" class="forecast-day-list"></div>
+    <p class="forecast-note">確定：前日までに保存された予測結果 ／ 予測：今日以降の計算結果</p>
   </section>
 
   <!-- 日別ポイントグラフ -->
@@ -579,7 +606,8 @@
     </button>
 
   </section>
-
-</main>
+  <section id="historyScreen" class="screen" hidden><section class="panel"><h2 class="panel-title">セット履歴</h2><div id="historyMount"></div></section></section>
+  <section id="helpScreen" class="screen" hidden><section class="panel"><h2 class="panel-title">使い方</h2><div class="panel-content"><p>① 設定からイベント日程・プレイ方法・楽曲・特攻値を入力して保存します。</p><p>② プレイ画面で日付を選び、精度とバックグラウンドの項目・時間を設定します。</p><p>③ 「この日の設定を決定」で確認し、Resultで予測ポイントと日別内訳を確認します。</p><p>④ 過去の日付は確定、今日と未来は予測として表示します。</p><p>⑤ セット履歴から日ごとの記録を確認できます。</p></div></section></section>
+</main></div>
 </body>
 </html>
