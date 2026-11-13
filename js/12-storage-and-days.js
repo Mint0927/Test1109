@@ -30,6 +30,9 @@ const data = {
 
   // フル手打ち・フルバクグラ
   fullBackground: isFullBackground,
+  wakeTime: $("wakeTimeInput")?.value,
+  singleWakeTime: $("singleWakeTime")?.value,
+  singleBedtime: $("singleBedtime")?.value,
 
   // 回線速度
   network: document.querySelector(
@@ -72,6 +75,7 @@ function loadLocalData() {
 // ===================================
 
 if (data.playMode !== undefined) {
+  if (data.playMode === "fullManual" && data.fullBackground === true) data.playMode = "fullBackground";
   const playModeRadio = Array.from(
     document.querySelectorAll('input[name="playMode"]')
   ).find(radio => radio.value === data.playMode);
@@ -85,9 +89,13 @@ if (data.playMode !== undefined) {
 // フル手打ち・フルバクグラの復元
 // ===================================
 
-if (typeof data.fullBackground === "boolean") {
-  setFullMode(data.fullBackground);
+if (typeof data.fullBackground === "boolean" && data.playMode === undefined) {
+  const legacyMode = document.querySelector(`input[name="playMode"][value="${data.fullBackground ? 'fullBackground' : 'fullManual'}"]`);
+  if (legacyMode) legacyMode.checked = true;
 }
+if (data.wakeTime && $("wakeTimeInput")) $("wakeTimeInput").value = data.wakeTime;
+if (data.singleWakeTime && $("singleWakeTime")) $("singleWakeTime").value = data.singleWakeTime;
+if (data.singleBedtime && $("singleBedtime")) $("singleBedtime").value = data.singleBedtime;
 
 // ===================================
 // 回線速度の復元
@@ -275,11 +283,7 @@ function normalizeDailySetting(date, index, saved) {
 
   return {
     date,
-    useOwnSettings: index === 0
-  ? true
-  : typeof saved?.useOwnSettings === "boolean"
-    ? saved.useOwnSettings
-    : index === eventDateList.length - 1,
+    useOwnSettings: true,
     accuracy,
     normalBg: Number(saved?.normalBgRuns != null ? bgSecondsForRuns("normalBg", saved.normalBgRuns) : saved?.normalBg ?? 0),
     eventBg: Number(saved?.eventBgRuns != null ? bgSecondsForRuns("eventBg", saved.eventBgRuns) : saved?.eventBg ?? 0),
@@ -328,8 +332,8 @@ function applyDayInputs(index) {
 
   $("normalBgRuns").disabled = inherited;
   $("eventBgRuns").disabled = inherited;
-  $("openNormalBgTime").disabled = inherited;
-  $("openEventBgTime").disabled = inherited;
+  if ($("openNormalBgTime")) $("openNormalBgTime").disabled = inherited;
+  if ($("openEventBgTime")) $("openEventBgTime").disabled = inherited;
 }
 
 // ===================================
@@ -375,72 +379,9 @@ function renderEventDateTabs() {
 
   if (!setting) return;
 
-  const label = document.createElement("label");
-  label.className = "daily-setting-checkbox";
-
-  const checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  checkbox.checked = setting.useOwnSettings;
-
-  // 1日目は変更不可
-  checkbox.disabled = selectedEventDayIndex === 0;
-
-
-checkbox.addEventListener("change", () => {
-
-  // 個別設定の状態を変更
-  setting.useOwnSettings = checkbox.checked;
-
-  // チェックを入れた場合は、現在表示中の設定を
-  // この日専用の設定として保存
-  if (checkbox.checked) {
-    setting.accuracy = Object.fromEntries(
-      accuracyIds.map(id => [
-        id,
-        Number($(id).value || 0)
-      ])
-    );
-
-    setting.normalBgRuns = readBgRuns("normalBg");
-    setting.eventBgRuns = readBgRuns("eventBg");
-    setting.normalBg = bgSecondsForRuns("normalBg", setting.normalBgRuns);
-    setting.eventBg = bgSecondsForRuns("eventBg", setting.eventBgRuns);
-  }
-
-  // チェック状態に応じて即座に入力欄へ反映
-  applyDayInputs(selectedEventDayIndex);
-
-  // 日付タブ・チェックボックスを更新
-  renderEventDateTabs();
-
-  // 計算結果とプレビューを更新
-  resetResult();
-  updateMixedPreview();
-
-  // 保存
-  // この日だけを未確定にする。初日や他の日の確認結果は残す。
-  confirmedDaySignatures.delete(selectedEventDayIndex);
-  failedDaySignatures.delete(selectedEventDayIndex);
-  updateDateTabStatuses();
-  refreshDailyConfirmationStatus();
-  saveLocalData();
-
-});
-
-
-  const text = document.createElement("span");
-
-  text.textContent =
-    selectedEventDayIndex === 0
-      ? "1日目の設定を使用"
-      : "この日の設定を個別にする";
-
-  label.appendChild(checkbox);
-  label.appendChild(text);
-
-  settingsArea.appendChild(label);
+  // 個別設定チェックは不要。すべての日付を独立して管理する。
+  setting.useOwnSettings = true;
 }
-
 
 /* ==========================================
    入力変更時の自動保存

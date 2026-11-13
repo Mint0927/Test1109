@@ -552,7 +552,22 @@ function simulateEventByDays(
 
   const originalDayIndex = selectedEventDayIndex;
 
+  const todayLocal = (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; })();
   for (let index = 0; index < eventDateList.length; index++) {
+    // 未来日は確定シミュレーションしない。直近の計算済み日のペースから予測する。
+    // アイテム残高は未来日では確定・変更しない。
+    if (eventDateList[index].date > todayLocal) {
+      const periodSeconds = getEventDaySeconds(index);
+      const source = results[results.length - 1];
+      const baselineSeconds = source?.periodSeconds || getEventDaySeconds(0) || 1;
+      const estimatedPoints = source ? Math.max(0, Math.floor((Number(source.dailyPoint)||0) * periodSeconds / baselineSeconds)) : 0;
+      const estimatedRuns = source ? Math.max(0, Math.floor((Number(source.actualEventRuns)||0) * periodSeconds / baselineSeconds)) : 0;
+      results.push({date:eventDateList[index].date,day:index+1,periodSeconds,dailyPoint:estimatedPoints,actualEventRuns:estimatedRuns,currentItems,forecast:true,calculated:false,normalBgSeconds:0,eventBgSeconds:0});
+      totalPoints += estimatedPoints;
+      totalEventRuns += estimatedRuns;
+      elapsedSeconds += periodSeconds;
+      continue;
+    }
     const setting = getEffectiveDaySetting(index);
 
     if (!setting) return null;

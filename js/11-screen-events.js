@@ -3,12 +3,12 @@
 // ===================================
 
 // 通常曲BGを開く
-$("openNormalBgTime").addEventListener("click", () => {
+$("openNormalBgTime")?.addEventListener("click", () => {
   openTimeDialog("normalBg");
 });
 
 // イベント曲BGを開く
-$("openEventBgTime").addEventListener("click", () => {
+$("openEventBgTime")?.addEventListener("click", () => {
   openTimeDialog("eventBg");
 });
 

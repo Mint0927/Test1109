@@ -53,22 +53,16 @@ function usedTime(runs, cycleInfo) {
 // ===================================
 
 function updatePlayMode() {
-  const mixed = getSelectedPlayMode() === "both";
-
-  $("networkArea").querySelectorAll("input").forEach(input => {
-    input.disabled = false;
-  });
-
-  $("fullModeArea").hidden = mixed;
+  const mode = getSelectedPlayMode();
+  const mixed = mode === "both";
+  isFullBackground = mode === "fullBackground";
+  $("fullModeArea").hidden = true;
   $("accuracyArea").hidden = isFullBackground;
   $("mixedTimeArea").hidden = !mixed;
-
-  $("networkArea").style.opacity = "1";
-
-  if (mixed) {
-    $("accuracyArea").hidden = false;
-  }
-
+  $("singleSleepArea").hidden = mixed;
+  $("networkArea").hidden = isFullBackground;
+  $("networkArea").querySelectorAll("input").forEach(input => { input.disabled = isFullBackground; });
+  if (typeof updateMixedDaySettingsVisibility === "function") updateMixedDaySettingsVisibility();
   resetResult();
   updateMixedPreview();
 }

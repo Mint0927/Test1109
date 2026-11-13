@@ -111,3 +111,7 @@ document.querySelectorAll('input[name="playMode"]').forEach(radio => {
 });
 
 updateMixedDaySettingsVisibility();
+
+// イベント期間が保存済みなら次回起動はプレイ画面から開始
+// Initial setup is only completed by an explicit successful Save click.
+try { if (localStorage.getItem('nogifes_initial_setup_completed_v1') === '1') showScreen('play'); } catch(e) { console.warn(e); }

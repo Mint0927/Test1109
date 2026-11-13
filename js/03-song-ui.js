@@ -58,8 +58,9 @@ $("saveSettings").addEventListener("click", () => {
   applyDayInputs(0);
   renderEventDateTabs();
 
-  // ローカル保存
+  // ローカル保存。明示的な保存操作が完了してから初期設定完了とする。
   saveLocalData();
+  localStorage.setItem("nogifes_initial_setup_completed_v1", "1");
 
   showScreen("play");
   updatePlayMode();

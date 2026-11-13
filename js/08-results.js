@@ -68,6 +68,7 @@ function renderDailyPointChart(days) {
 
     const column = document.createElement("div");
     column.className = "point-chart-column";
+    if (day.forecast || day.date > new Date().toLocaleDateString("sv-SE")) column.classList.add("point-chart-forecast");
 
     const valueLabel = document.createElement("div");
     valueLabel.className = "point-chart-value";
@@ -80,11 +81,11 @@ bar.className = "point-chart-bar";
 const barHeight = (point / axisMax) * 220;
 
 bar.style.height = `${barHeight}px`;
-    bar.title = `${index + 1}日目：${point.toLocaleString()} pt`;
+    bar.title = `${index + 1}日目：${point.toLocaleString()} pt${column.classList.contains("point-chart-forecast") ? "（予測）" : ""}`;
 
     const dayLabel = document.createElement("div");
     dayLabel.className = "point-chart-day";
-    dayLabel.textContent = `${index + 1}日目`;
+    dayLabel.textContent = `${index + 1}日目${column.classList.contains("point-chart-forecast") ? "（予測）" : ""}`;
 
 valueLabel.style.bottom = `${barHeight + 5}px`;
 valueLabel.style.top = "auto";
@@ -143,7 +144,7 @@ function renderDailyResultDetails(days) {
     const setting = getEffectiveDaySetting(index);
 
     document.getElementById("resultSelectedDay").textContent =
-      `${index + 1}日目`;
+      `${index + 1}日目（${day.forecast ? "予測" : "確定"}）`;
 
     document.getElementById("resultNormalBgTime").textContent =
       secToTime(day.normalBgSeconds ?? setting?.normalBg ?? 0);
@@ -161,7 +162,7 @@ function renderDailyResultDetails(days) {
       extra.replaceChildren();
       if(day.calculated){
         const p=document.createElement("p");
-        p.textContent=`就寝前 ${Math.floor(day.preBedPoints||0).toLocaleString()} pt ＋ 夜間イベントBG ${Math.floor(day.nightPoints||0).toLocaleString()} pt ＝ ${Math.floor(day.dailyPoint||0).toLocaleString()} pt（予測）`;
+        p.textContent=`就寝前 ${Math.floor(day.preBedPoints||0).toLocaleString()} pt ＋ 夜間イベントBG ${Math.floor(day.nightPoints||0).toLocaleString()} pt ＝ ${Math.floor(day.dailyPoint||0).toLocaleString()} pt（${day.forecast ? "予測" : "確定"}）`;
         extra.appendChild(p);
       }
     }
@@ -207,11 +208,11 @@ function showEventSummaryResult(projection) {
       const independent=window.calculateIndependentDailyForecast();
       if(independent?.days?.length)projection=independent;
     } catch(error) {
-      showCalculationError('日別予測の計算に失敗しました：'+error.message);
-      return;
+      console.warn('日別予測は既存の予測を表示します',error);
     }
   }
-  const days=projection.days;
+  const days=typeof window.prepareForecastDays === "function" ? window.prepareForecastDays(projection.days) : projection.days;
+  if (typeof window.renderForecastDayList === "function") window.renderForecastDayList(days);
   // 総合獲得ポイント
   const totalPoints = days.reduce(
     (total, day) =>
@@ -225,8 +226,9 @@ function showEventSummaryResult(projection) {
   $("eventTotalDays").textContent =
     `イベント全${days.length}日間の合計`;
 
-  // 日別グラフ
-  renderDailyPointChart(days);
+  // 日別ポイント一覧を優先し、従来の棒グラフは非表示
+  const oldChart = document.getElementById("dailyPointChart")?.closest(".result-daily-panel");
+  if (oldChart) oldChart.hidden = true;
 
   // 日別詳細
   renderDailyResultDetails(days);
@@ -291,6 +293,10 @@ function runCalculation() {
       networkTime,
       itemMap
     );
+  } catch (error) {
+    console.error('計測エラー',error);
+    showCalculationError('計測できませんでした：'+(error?.message||String(error)));
+    return;
   } finally {
     // 計算前に選択していた日付へ戻す
     setWheelValue("normalBg", 0);
@@ -299,7 +305,11 @@ function runCalculation() {
     renderEventDateTabs();
   }
 
-  if (!projection) return;
+  if (!projection) {
+    // 失敗を黙って無視せず、利用者に画面上で理由を知らせる。
+    if ($('calculationError')?.hidden) showCalculationError('本日の計算条件を確認してください。未来日は予測のみで確定しません。');
+    return;
+  }
 
   const firstDay = projection.days[0];
 
