@@ -1,0 +1,22 @@
+/* New responsive visual shell; original calculation DOM IDs remain intact. */
+:root{--app-purple:#683ab7;--app-light:#f7f4ff;--app-ink:#302344}
+body{background:#f4f0fa!important;color:var(--app-ink)}
+.app-shell{display:flex;align-items:stretch;min-height:100vh;max-width:1600px;margin:0 auto}
+.app-sidebar{position:sticky;top:0;align-self:flex-start;height:100vh;width:164px;flex:0 0 164px;background:linear-gradient(180deg,#f0e8fc,#faf7ff);border-right:1px solid #ded1f1;padding:20px 10px;display:flex;flex-direction:column;gap:9px;z-index:20}
+.sidebar-brand{font-weight:800;color:#6535ae;text-align:center;font-size:15px;line-height:1.5;margin-bottom:18px}
+.app-sidebar button{display:flex;align-items:center;gap:9px;border:0;border-radius:12px;background:transparent;color:#655578;font-weight:700;font-size:14px;padding:14px 10px;cursor:pointer;text-align:left;white-space:nowrap}
+.app-sidebar button.active{background:#7646bc;color:white;box-shadow:0 3px 12px #6c36ad33}
+.app-content{flex:1;min-width:0;max-width:1050px!important;width:auto!important;margin:0 auto!important;padding:22px 26px 50px!important}
+.title-banner{position:relative;border-radius:18px!important;background:linear-gradient(115deg,#7949c7,#9b72dc)!important;padding:22px!important;margin-bottom:24px!important;box-shadow:0 8px 22px #6b39a51f}
+.title-banner h1{color:white!important;font-size:clamp(19px,2.4vw,29px)!important}
+.panel,.network-area,.bonus-settings,.result-panel,.event-summary-result{border-radius:16px!important;box-shadow:0 4px 18px #53328c12!important}
+.panel-title,.result-daily-title{color:#6b39b1!important}
+.calc-button,.bg-confirm-button{border-radius:12px!important}
+.legacy-manual-mode,#openSettings{display:none!important}
+#dailyPointChart{display:none!important}
+#eventPeriodPanel.is-locked{display:none!important}
+#resultScreen #eventSummaryResult{margin-bottom:20px}
+#historyScreen .panel,#helpScreen .panel{min-height:260px}
+[hidden]{display:none!important}
+@media(min-width:900px){.app-content .panel-content{max-width:100%}.app-content .screen{width:100%}}
+@media(max-width:650px){.app-sidebar{width:67px;flex-basis:67px;padding:12px 5px}.sidebar-brand{font-size:10px;margin-bottom:14px}.app-sidebar button{flex-direction:column;gap:3px;font-size:18px;padding:12px 2px}.app-sidebar button span{font-size:9px;letter-spacing:-.4px}.app-content{padding:10px 9px 30px!important}.title-banner{padding:15px 12px!important;border-radius:13px!important}.title-banner h1{font-size:17px!important}.panel{border-radius:12px!important}}

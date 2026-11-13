@@ -1,0 +1,10 @@
+/* 既存レイアウトを保持したResult追加表示 */
+.forecast-day-list{display:flex;flex-direction:column;gap:0;max-height:360px;overflow-y:auto;border:1px solid #e9e1f5;border-radius:12px;background:#fff}
+.forecast-day-row{display:flex;align-items:center;gap:10px;padding:12px 10px;border-bottom:1px solid #eee9f5}
+.forecast-day-row:last-child{border-bottom:0}
+.forecast-day-name{min-width:105px;font-size:14px;color:#514368}
+.forecast-day-points{flex:1;text-align:right;font-size:14px;color:#42226c;white-space:nowrap}
+.forecast-day-status{font-size:12px;border-radius:99px;padding:3px 8px;white-space:nowrap;background:#f0e9fb;color:#66439d}
+.forecast-day-status.is-fixed{background:#e7f6ec;color:#23653b}
+.forecast-note{font-size:12px;line-height:1.5;color:#6b6376;margin:10px 0 0}
+@media(max-width:390px){.forecast-day-row{gap:6px;padding:10px 7px}.forecast-day-name{min-width:90px;font-size:12px}.forecast-day-points{font-size:12px}.forecast-day-status{font-size:11px;padding:3px 6px}}

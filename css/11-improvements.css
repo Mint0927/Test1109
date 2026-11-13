@@ -1,0 +1,22 @@
+/* 既存のデザインを活かした操作性改善 */
+html,body{height:100%;margin:0;overflow:hidden}
+body{overscroll-behavior:none}
+.container{height:100dvh;max-height:100dvh;display:flex;flex-direction:column;box-sizing:border-box;overflow:hidden;padding-bottom:env(safe-area-inset-bottom)}
+.title-banner{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:10px 12px}
+.title-banner h1{font-size:clamp(17px,4.2vw,22px);flex:1;min-width:0}
+.header-clock{font-variant-numeric:tabular-nums;font-size:12px;white-space:nowrap}
+.screen:not([hidden]){display:flex;flex-direction:column;min-height:0;flex:1;overflow-y:auto;overscroll-behavior:contain;padding-bottom:12px}
+.screen[hidden], [hidden]{display:none!important}
+.mode-three{display:grid!important;grid-template-columns:1fr 1fr;gap:8px}
+.mode-three label{font-size:13px;padding:9px 6px;display:flex;align-items:center;gap:5px;min-width:0}
+.mode-three label:last-child{grid-column:1/-1}
+button,.calc-button,.secondary-button{max-width:100%;box-sizing:border-box;min-height:38px;font-size:13px!important;padding:8px 12px!important}
+#calc,#saveSettings{position:sticky;bottom:0;z-index:12;margin-top:auto;flex-shrink:0;box-shadow:0 -3px 14px rgba(66,28,119,.12)}
+.compact-time-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px}
+.compact-time-grid label{font-size:13px}.compact-time-grid input{width:100%;box-sizing:border-box}
+#mixedTimeArea .panel-content{min-height:0}
+#bgCategoryList{max-height:190px;overflow-y:auto;overscroll-behavior:contain}
+#eventDateTabs{flex-shrink:0}
+@media(max-width:380px){.title-banner{gap:4px}.header-clock{font-size:11px}.mode-three label{font-size:12px}}
+
+.current-event-day{display:inline-flex;align-items:center;font-weight:700;font-size:clamp(11px,2.6vw,14px);padding:5px 9px;border-radius:9px;background:rgba(255,255,255,.22);color:white;white-space:nowrap;}

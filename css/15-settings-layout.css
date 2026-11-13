@@ -1,0 +1,46 @@
+/* Screenshot-matched settings page; responsive PC and mobile. */
+#settingsScreen{max-width:920px;margin:0 auto;display:flex;flex-direction:column;gap:15px;font-family:system-ui,-apple-system,'Noto Sans JP',sans-serif}
+#settingsScreen .settings-design-card{background:#fff;border:1.5px solid #e5d3ff;border-radius:19px;padding:18px 21px;box-shadow:0 3px 10px #5424ad0c}
+#settingsScreen .settings-card-heading{display:flex;align-items:center;gap:13px;font-size:clamp(18px,2.2vw,25px);color:#15111e;font-weight:850;margin:0 0 13px}
+#settingsScreen .settings-card-heading>span:first-child{font-size:31px;color:#8424e9;line-height:1}
+#settingsScreen .settings-design-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #eee6fa;min-height:48px}
+#settingsScreen .settings-design-row:last-child{border-bottom:0}
+#settingsScreen .settings-design-row>strong{font-size:clamp(14px,1.6vw,19px);font-weight:800;color:#16131b;flex:0 0 35%}
+#settingsScreen .settings-static-value{background:#eee8fa;border-radius:12px;text-align:center;padding:9px 13px;font-size:19px;font-weight:850;min-width:48%}
+#settingsScreen .settings-static-value small{font-size:12px;color:#777}
+#settingsScreen .settings-info-note{background:#f1e5ff;border-radius:12px;color:#6121b9;text-align:center;font-size:13px;font-weight:700;padding:12px;margin:12px 0 0}
+#settingsScreen .initial-schedule{margin-top:12px;color:#7134bd;font-weight:700}
+#settingsScreen .initial-schedule summary,#settingsScreen .settings-bonus-extra summary{cursor:pointer;padding:8px;font-size:13px;color:#7631bb}
+#settingsScreen #eventPeriodPanel{margin-top:8px}
+#settingsScreen .settings-mode-switch{display:flex;gap:8px;justify-content:flex-end;flex:1}
+#settingsScreen .settings-mode-switch label{cursor:pointer;flex:1;border:1px solid #d5c9e6;border-radius:12px;padding:12px 9px;font-size:14px;font-weight:750;text-align:center;display:flex;align-items:center;justify-content:center;min-height:55px;background:#fff;color:#302345}
+#settingsScreen .settings-mode-switch label:has(input:checked){background:linear-gradient(120deg,#a126ee,#5114bc);color:white;border-color:#7424dc}
+#settingsScreen .settings-mode-switch input{position:absolute;opacity:0;width:1px;height:1px}
+#settingsScreen #normalSong{flex:1;min-width:0;width:100%;max-width:410px;border-radius:10px;padding:10px;font-size:15px}
+#settingsScreen .settings-song-time{font-size:12px;text-align:right;color:#777;margin:0;padding:3px 0}
+#settingsScreen .settings-song-time input{max-width:52px;font-size:12px;padding:2px}
+#settingsScreen .event-time{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex:1}
+#settingsScreen .event-time input{width:74px;max-width:26%;padding:9px 4px;text-align:center;border:1px solid #d8cae9;border-radius:10px;font-size:18px;font-weight:700}
+#settingsScreen .settings-bonus-line{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex:1;flex-wrap:wrap}
+#settingsScreen .settings-bonus-line .bonus-input>label,#settingsScreen .settings-bonus-line .event-point>label{display:none}
+#settingsScreen .settings-bonus-line .bonus-input-unit{display:flex;align-items:center;gap:5px}
+#settingsScreen .settings-bonus-line #bonus{width:100px;max-width:100px;padding:9px;text-align:center;font-weight:800;border-radius:9px}
+#settingsScreen .settings-bonus-line .event-point{font-size:13px;color:#6d35aa;white-space:nowrap}
+#settingsScreen .settings-bonus-line #eventPoint{font-weight:850;color:#5511ab}
+#settingsScreen .settings-bonus-extra{margin-top:8px}
+#settingsScreen .settings-network-note{font-size:13px;font-weight:600;color:#5b4d65;margin-left:3px}
+#settingsScreen .network-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#settingsScreen .network-options label{display:flex;align-items:center;justify-content:center;border:1px solid #d5c9e6;border-radius:12px;min-height:55px;cursor:pointer;font-weight:750;font-size:16px;background:white}
+#settingsScreen .network-options label:has(input:checked){border:2px solid #8020e0;background:#f1e4ff;color:#5d10bb}
+#settingsScreen .network-options input{accent-color:#7b21dc}
+#settingsScreen .settings-save-button{width:100%;background:linear-gradient(110deg,#a12af4,#5210b8)!important;color:white!important;font-weight:850!important;font-size:clamp(18px,2vw,25px)!important;border-radius:15px!important;min-height:66px;margin:10px 0 0!important}
+#settingsScreen .settings-end-button{width:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;min-height:83px;background:#fff;color:#df1717;border:2px solid #ef2929;border-radius:16px;font-size:clamp(20px,2.3vw,27px);font-weight:850;cursor:pointer}
+#settingsScreen .settings-end-button small{font-size:12px;font-weight:650}
+#settingsScreen .settings-end-button:disabled{opacity:.6;cursor:default}
+#settingsScreen .settings-legacy-hidden{display:none!important}
+#settingsScreen [hidden]{display:none!important}
+.app-sidebar{width:115px;flex-basis:115px}
+.app-sidebar button{flex-direction:column;justify-content:center;font-size:24px;gap:4px;padding:14px 3px}
+.app-sidebar button span{font-size:14px}
+.title-banner{background:linear-gradient(120deg,#ac31f3,#4118a9)!important}
+@media(max-width:650px){.app-sidebar{width:62px;flex-basis:62px}.app-sidebar button{font-size:22px}.app-sidebar button span{font-size:10px}#settingsScreen{gap:11px}#settingsScreen .settings-design-card{padding:13px 10px;border-radius:14px}#settingsScreen .settings-card-heading{font-size:17px;gap:8px}#settingsScreen .settings-card-heading>span:first-child{font-size:23px}#settingsScreen .settings-design-row>strong{font-size:12px;flex-basis:34%}#settingsScreen .settings-design-row{gap:5px}#settingsScreen .settings-mode-switch{gap:4px}#settingsScreen .settings-mode-switch label{font-size:10px;padding:7px 4px;min-height:49px}#settingsScreen .settings-static-value{font-size:14px;min-width:50%;padding:9px 5px}#settingsScreen .settings-static-value small{font-size:9px}#settingsScreen #normalSong{font-size:12px}#settingsScreen .settings-bonus-line #bonus{width:70px;max-width:70px}#settingsScreen .settings-bonus-line{gap:5px}#settingsScreen .settings-bonus-line .event-point{font-size:10px}#settingsScreen .event-time input{width:48px;font-size:14px}#settingsScreen .network-options{gap:5px}#settingsScreen .network-options label{font-size:12px;min-height:48px}#settingsScreen .settings-info-note{font-size:11px}}

@@ -1,0 +1,24 @@
+
+#oneSetManager[hidden],#eventPeriodPanel[hidden]{display:none!important}
+.bg-activities,.day-set-output{background:#fff;border:1px solid #e2d4fa;border-radius:14px;padding:12px;margin:12px 0}
+.bg-activities h3,.day-set-output h3{font-size:1rem;margin:0 0 8px;color:#6832a7}
+.bg-activities-hint{font-size:.77rem;color:#666;margin:0 0 8px}
+.bg-activity-list{max-height:195px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.bg-activity-row{display:grid;grid-template-columns:minmax(75px,1fr) 95px 95px 32px;gap:5px;align-items:center;padding:6px 0;border-bottom:1px solid #eee}
+.bg-activity-row input{width:100%;min-width:0;font-size:13px;padding:6px 3px;border:1px solid #d7c5f4;border-radius:7px;box-sizing:border-box}
+.bg-activity-row button{padding:5px;border:0;border-radius:7px;background:#f4eafd;color:#6534a1}
+#addBgActivity{width:auto;min-width:0;margin-top:9px;padding:8px 14px;font-size:.85rem}
+#bgActivityError{font-size:.8rem;color:#b42335}
+#daySetOutputText{font-size:.86rem;white-space:pre-line;line-height:1.6}
+@media(max-width:440px){.bg-activity-row{grid-template-columns:minmax(60px,1fr) 79px 79px 27px;gap:3px}.bg-activity-row input{font-size:11px}}
+
+.bg-activities{margin:8px 0}.bg-activity-list{max-height:210px;overflow-y:auto;overscroll-behavior:contain;border:1px solid #e9def7;border-radius:10px;padding:5px}
+.bg-entry-form{display:grid;grid-template-columns:105px minmax(0,1fr);gap:7px;align-items:center;margin-top:10px}
+.bg-entry-form label{font-size:.8rem}.bg-entry-form input,.bg-entry-form select{width:100%;min-width:0;box-sizing:border-box;padding:7px;border-radius:8px;border:1px solid #d7c5f4;font-size:.86rem}
+.bg-entry-form p,.bg-entry-form button{grid-column:1/-1;margin:3px 0}.bg-entry-form button{width:auto;justify-self:start;padding:9px 15px}
+.bg-item-row{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:8px 5px;border-bottom:1px solid #eee;font-size:.82rem}.bg-item-row button{width:auto;min-width:0;padding:5px 8px;font-size:.77rem}
+#bgActivityError{color:#ba2342;white-space:pre-line}.bg-runs-total{margin-top:8px}
+@media(max-width:400px){.bg-entry-form{grid-template-columns:83px minmax(0,1fr)}}
+
+.point-chart-forecast .point-chart-bar{background:#b8bfcd!important;background-image:linear-gradient(180deg,#dce1eb,#aeb8ca)!important;opacity:.85}
+.point-chart-forecast .point-chart-day{color:#798292;font-size:.7rem}
