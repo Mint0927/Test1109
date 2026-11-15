@@ -1,3 +1,4 @@
+try{localStorage.getItem('_t')}catch(e){const m={};Object.defineProperty(window,'localStorage',{value:{getItem:k=>k in m?m[k]:null,setItem:(k,v)=>{m[k]=String(v)},removeItem:k=>{delete m[k]}}})}
 'use strict';
 const PROD_KEY='nogifes_visual_v1',TEST_KEY='nogifes_date_test_v1',FLAG_KEY='nogifes_test_mode_enabled';
 let testMode=localStorage.getItem(FLAG_KEY)==='1';
@@ -35,6 +36,7 @@ const rollover=()=>{
    d.confirmed=false;
    d.activities.forEach(a=>a.confirmed=false);
   }
+  s.day=activeIndex();
   s.lastSeenDate=now;save();
  }
 };
@@ -184,7 +186,7 @@ function renderPlay(){
   body=panel('精度設定（手打ち時のみ）',full?'<p class="note">フルBGでは精度設定は不要です（Dコン100%）。</p>':`<div class="acc">${['フルエクセレント','フルコン','A','B','C','D'].map((a,i)=>`<label>${a}<select data-accuracy="${i}" ${disabled}>${Array.from({length:11},(_,j)=>`<option value="${j*10}" ${d.accuracy[i]===j*10?'selected':''}>${j*10}%</option>`).join('')}</select></label>`).join('')}</div><p class="note">合計 ${d.accuracy.reduce((a,b)=>a+b,0)}%（100%にしてください）</p>`)+`<button class="primary wide" data-action="finishAccuracy" ${disabled}>決定して次へ</button>`;
  }else if(playTab==='sleep'){
   if(s.day===s.days-1){body=panel('最終日の設定',`<p class="note">最終日は就寝せず、イベント終了の23:59:59までプレイします。起床・就寝時刻の設定は不要です。</p><button class="primary wide" data-action="finishSleep" ${disabled}>確認して次へ</button>`);}
-  else body=panel('起床・就寝時刻',row('起床時刻',`<button class="timebtn" data-wheel="wake" ${disabled}>${d.wake}</button>`)+row('就寝時刻',`<button class="timebtn" data-wheel="bedtime" ${disabled}>${d.bedtime}</button>`)+row('起床から就寝まで',`<span class="soft">${fmt(awakeSeconds(d))}</span>`)+`<p class="small">就寝時刻を決定すると起床時刻を自動調整します。起床時刻は手動変更できます。就寝前はイベントBGに必要なアイテム（114回なら99,750個）を優先して確保します。</p>`+bgDurationPanel()+`<button class="primary wide" data-action="finishSleep" ${disabled}>決定して次へ</button>`);
+  else body=panel('起床・就寝時刻',row('起床時刻',`<button class="timebtn" data-wheel="wake" ${disabled}>${d.wake}</button>`)+row('就寝時刻',`<button class="timebtn" data-wheel="bedtime" ${disabled}>${d.bedtime}</button>`)+row('起床から就寝まで',`<span class="soft">${fmt(awakeSeconds(d))}</span>`)+`<p class="small">就寝時刻を決定すると起床時刻を自動調整します。起床時刻は手動変更できます。就寝前はイベントBG用のアイテム確保を優先します。所持アイテムで起床時刻までBGを続けられない場合は、決定時にエラーになります。</p>`+bgDurationPanel()+`<button class="primary wide" data-action="finishSleep" ${disabled}>決定して次へ</button>`);
  }else if(playTab==='bg'){
   const acts=d.activities.map((a,i)=>`<div class="activity"><div class="activity-name"><input class="activity-name-input" type="text" data-activity-name="${i}" value="${escapeAttr(a.name)}" maxlength="40" placeholder="項目名" ${disabled}></div><div class="seg"><button data-action="activityMode" data-index="${i}" data-value="normal" class="${a.mode==='normal'?'selected':''}" ${disabled}>通常BG</button><button data-action="activityMode" data-index="${i}" data-value="event" class="${a.mode==='event'?'selected':''}" ${disabled}>イベントBG</button></div><button class="timebtn" data-wheel="activity" data-index="${i}" ${disabled}>${a.duration.slice(0,5)}</button><div class="activity-confirm"><button class="primary" data-action="activityConfirm" data-index="${i}" ${disabled}>決定</button><span class="check-slot">${a.confirmed?'<span class="check">✓</span>':''}</span></div>${i>0?`<button class="remove-activity" data-action="removeActivity" data-index="${i}" ${disabled}>×</button>`:'<span class="remove-placeholder"></span>'}</div>`).join('');
   const total=d.activities.reduce((x,a)=>x+sec(a.duration),0);
@@ -245,7 +247,7 @@ function simulate(){
   }
   const d=predictionData(day),accuracy=d.accuracy||[0,0,0,0,0,100];
   const manualGain=Math.round(accuracy.reduce((v,p,j)=>v+TABLE[song[2]][j]*p/100,0));
-  const errors=[];let normalRuns=0,eventRuns=0,manualNormal=0,manualEvent=0;
+  const errors=[];let normalRuns=0,eventRuns=0,manualNormal=0,manualEvent=0;const log=[];let phase=0;
   let earned=0,spent=0,points=0,used=0;
   let bgNormalSeconds=0,bgEventSeconds=0,sleepEventSeconds=0,sleepEventRuns=0,manualNormalSeconds=0,manualEventSeconds=0;
   const wake=sec(d.wake),bed=sec(d.bedtime);
@@ -267,14 +269,14 @@ function simulate(){
   const gainNormal=bg=>{
    const gain=bg?bgGain:manualGain,time=bg?normalBg:normalManual;
    if(inv+gain>ITEM_CAP||(!bg&&free<=0))return false;
-   inv+=gain;earned+=gain;used+=time;
+   inv+=gain;earned+=gain;used+=time;log.push(['n',bg?1:0,time,gain,0,phase]);
    if(bg){normalRuns++;bgNormalSeconds+=time}else{manualNormal++;manualNormalSeconds+=time;free-=time}
    return true;
   };
   const playEvent=(bg,timeOverride)=>{
    const time=timeOverride??(bg?eventBg:eventManual);
    if(inv<ITEM_COST||(!bg&&free<=0))return false;
-   inv-=ITEM_COST;spent+=ITEM_COST;points+=pt(bg);used+=time;
+   inv-=ITEM_COST;spent+=ITEM_COST;points+=pt(bg);used+=time;log.push(['e',bg?1:0,time,-ITEM_COST,pt(bg),phase]);
    if(bg){eventRuns++;bgEventSeconds+=time}else{manualEvent++;manualEventSeconds+=time;free-=time}
    return true;
   };
@@ -291,7 +293,13 @@ function simulate(){
     if(a.mode==='event'&&remaining>114*eventBg-15){errors.push(`${a.name}：イベントBGの連続実行114回を超えています。設定を分割してください`);break}
     for(let j=0;j<count;j++){
      if(a.mode==='normal'){
-      while(inv+bgGain>ITEM_CAP&&!errors.length){if(isFull||!playEvent(false))errors.push(`${a.name}：上限回避のイベント曲手打ち時間が不足しています`)}
+      if(inv+bgGain>ITEM_CAP&&!errors.length){
+       // 上限に来そうなら、残りの通常曲BGぶんの空きを作るまでイベント曲をまとめて走らせる
+       const rem=count-j;
+       const need=Math.min(Math.floor(inv/ITEM_COST),Math.max(1,Math.ceil((inv+rem*bgGain-ITEM_CAP)/ITEM_COST)));
+       for(let m=0;m<need&&!errors.length;m++){if(isFull||!playEvent(false))errors.push(`${a.name}：上限回避のイベント曲手打ち時間が不足しています`)}
+       while(inv+bgGain>ITEM_CAP&&!errors.length){if(isFull||!playEvent(false))errors.push(`${a.name}：上限回避のイベント曲手打ち時間が不足しています`)}
+      }
       if(!errors.length&&!gainNormal(true))errors.push(`${a.name}：通常曲BGを実行できません`);
      }else{
       while(inv<ITEM_COST&&!errors.length){if(isFull||!gainNormal(false))errors.push(`${a.name}：イベントBGに必要なアイテムを補充できません`)}
@@ -308,7 +316,7 @@ function simulate(){
   free=awakeAvailable-bgNormalSeconds-bgEventSeconds-manualNormalSeconds-manualEventSeconds;
   if(!isFull&&!errors.length&&free>0){
    const requiredRuns=day<s.days-1?Math.ceil(((base+86400+wake)-bedAt+15)/eventBg):0;
-   const targetItems=Math.max(0,requiredRuns)*ITEM_COST;
+   const targetItems=Math.min(ITEM_CAP,Math.max(0,requiredRuns)*ITEM_COST);
    const startInv=inv;
    const limitN=Math.ceil(free/normalManual)+1;
    let best=null;
@@ -348,16 +356,8 @@ function simulate(){
   const daytimeUsed=bgNormalSeconds+manualNormalSeconds+manualEventSeconds+(bgEventSeconds-sleepEventSeconds);
   if(daytimeUsed>awakeAvailable+Math.max(normalBg,eventBg,normalManual,eventManual))errors.push(`日中の実行時間が活動可能時間を超えています（使用${fmt(daytimeUsed)}、活動可能${fmt(awakeAvailable)}）。BGの補充時間を含めて確認してください`);
   const adjustedBedAt=day===s.days-1?null:Math.max(bedAt,start+daytimeUsed);
-  // 就寝中114回に必要な99,750個を確保できなければ計算を成立させない。
-  // アイテム上限を超えるような仮想的な補充は行わない。
-  if(day<s.days-1&&!errors.length){
-   const sleepSpan=sleepTarget-adjustedBedAt;
-   const requiredRuns=Math.ceil((sleepSpan+15)/eventBg);
-   if(requiredRuns>0&&requiredRuns<=114){
-    const requiredItems=requiredRuns*ITEM_COST;
-    if(inv<requiredItems)errors.push(`就寝前のアイテム不足：必要${num(requiredItems)}個（${requiredRuns}回分）、所持${num(inv)}個、不足${num(requiredItems-inv)}個。日中のBG時間や手打ち時間を調整してください`);
-   }
-  }
+  // 就寝時の所持数が不足しても、その時点で実行できる回数だけBGを行う。
+  // アイテムを仮想的に補充せず、875個未満になったら終了する。
   let sleepAvailable=0,sleepEnd=null;
   if(day<s.days-1&&!errors.length){
    if(sleepTarget<=adjustedBedAt)errors.push('起床時刻は就寝時刻より後にしてください');
@@ -366,23 +366,26 @@ function simulate(){
     // 起床予定時刻までに開始した曲は最後まで完了。最終待機は含めない。
     const count=Math.ceil((sleepAvailable+15)/eventBg);
     if(count>114)errors.push(`就寝中BGが114回の上限を超えます（必要${count}回）`);
-    else if(inv<count*ITEM_COST)errors.push(`就寝中BGのアイテム不足：必要${num(count*ITEM_COST)}個、所持${num(inv)}個`);
     else{
-     sleepEventRuns=count;
-     sleepEventSeconds=count*eventBg-15;
-     for(let j=0;j<count;j++){
-      const elapsed=j===count-1?s.eventSeconds:eventBg;
+     sleepEventRuns=Math.min(count,Math.floor(inv/ITEM_COST));phase=1;
+     sleepEventSeconds=sleepEventRuns>0?sleepEventRuns*eventBg-15:0;
+     for(let j=0;j<sleepEventRuns;j++){
+      const elapsed=j===sleepEventRuns-1?s.eventSeconds:eventBg;
       if(!playEvent(true,elapsed)){errors.push('就寝中BGを実行できません');break}
      }
+     // 99,750個の一律確保は不要。睡眠時間に必要な回数だけ所持アイテムで判定する。
+     if(sleepEventRuns<count){
+      const shortage=(count-sleepEventRuns)*ITEM_COST;
+      errors.push(`就寝中BGが起床時刻より早く終了します。必要${count}回、実行可能${sleepEventRuns}回（${num(shortage)}個不足）。就寝・起床時刻またはBG設定を見直してください。`);
+     }
      sleepEnd=adjustedBedAt+sleepEventSeconds;
-     if(sleepEnd<sleepTarget)errors.push(`BGが起床時刻より早く終了します。BG終了${fmt(sleepEnd%86400)}、設定起床${fmt(wake)}`);
     }
    }
   }
   if(day<s.days-1&&sleepEnd!==null)previousSleepEnd=sleepEnd;
   if(inv<0||inv>ITEM_CAP)errors.push('アイテム上限エラー');
   totalPt+=points;totalItems+=spent;totalTime+=used;
-  days.push({points,earned,spent,inv,normalRuns,eventRuns,manualNormal,manualEvent,
+  days.push({log,points,earned,spent,inv,normalRuns,eventRuns,manualNormal,manualEvent,
    bgNormalSeconds,bgEventSeconds,sleepEventSeconds,sleepEventRuns,manualNormalSeconds,manualEventSeconds,
    confirmed:d.confirmed,errors,awakeAvailable,sleepAvailable,daytimeUsed,dayStart:start,dayEnd:day<s.days-1?sleepEnd:end,
    adjustedBedAt, idleSeconds:Math.max(0,awakeAvailable-daytimeUsed)});
@@ -459,6 +462,217 @@ document.addEventListener('click',e=>{const pt=e.target.closest('[data-play-tab]
   copy.testClock=localDayString(new Date());copy.snapshots={};copy.lastSeenDate=copy.testClock;
   s={...defaults(),...copy};save();page=s.initialized?'settings':'setup';render();return;
  }
- const d=dayData(s.day),i=+b.dataset.index;if(page==='play'&&!todayEditable()&&['activityMode','activityConfirm','confirmDay','addActivity','removeActivity'].includes(act))return;if(act==='finishAccuracy'){if(s.mode==='both'&&d.accuracy.reduce((a,v)=>a+v,0)!==100){alert('精度の合計を100%にしてください');return}tabDone(d).accuracy=true;save();playTab='sleep'}else if(act==='finishSleep'){const err=s.day===s.days-1?null:sleepScheduleError(d);if(err){alert(err);return}tabDone(d).sleep=true;save();playTab='bg'}else if(act==='finishBg'){if(!tabDone(d).sleep){alert('先に起床・就寝時刻を確定してください');playTab='sleep';render();return}const err=(s.day===s.days-1?null:sleepScheduleError(d,true))||allActivityTimeError(d);if(err){alert('BG設定不可：'+err);return}if(d.activities.some(a=>sec(a.duration)>0&&!a.confirmed)){alert('BG時間を設定した項目は、それぞれ「決定」を押してください');return}const check=simulate();if(!check.valid){const issue=check.days.find(x=>x.errors.length);alert('BG設定不可：'+(issue?.errors.join('\n')||'日中・就寝中の実行条件を満たしていません'));return}tabDone(d).bg=true;save();playTab='measure'}else if(act==='measureDay'){if(!Object.values(tabDone(d)).every(Boolean)){alert('3つの設定タブを決定してください');return}const check=simulate();if(!check.valid){const failure=check.days.find(x=>x.errors.length);alert('計測できません。\n'+(failure?.errors.join('\n')||'設定を見直してください'));return}confirmMeasuredDay(s.day,check);page='result'}else if(act==='mode'){s.mode=b.dataset.value;save()}else if(act==='network'){s.network=+b.dataset.value;save()}else if(act==='prev')s.day=Math.max(0,s.day-1);else if(act==='next')s.day=Math.min(s.days-1,s.day+1);else if(act==='addActivity'){const names=TYPES.filter(name=>!d.activities.some(a=>a.name===name));const name=names[0]||`追加項目${d.activities.length+1}`;d.activities.push(newActivity(name));resetTab(d,'bg');save()}else if(act==='removeActivity'){if(i>0&&i<d.activities.length){d.activities.splice(i,1);resetTab(d,'bg');save()}}else if(act==='activityMode'){d.activities[i].mode=b.dataset.value;d.activities[i].confirmed=false;resetTab(d,'bg');save()}else if(act==='activityConfirm'){if(Number.isInteger(i)&&i>=0&&i<d.activities.length){if(!d.activities[i].name.trim()){alert('項目名を入力してください');return}const error=activityTimeError(d,i);if(error){alert(error);return}d.activities[i].confirmed=true;resetTab(d,'bg');save()}}else if(act==='confirmDay'){if(s.mode==='both'&&d.accuracy.reduce((a,v)=>a+v,0)!==100){alert('精度の合計を100%にしてください');return}if(d.activities.some(a=>!a.name.trim())){alert('BG項目名を入力してください');return}const timeError=allActivityTimeError(d);if(timeError){alert(timeError);return}if(d.activities.some(a=>sec(a.duration)>0&&!a.confirmed)){alert('実行時間を入力した項目は「決定」を押してください');return}const check=simulate();if(!check.valid){const failure=check.days.find(x=>x.errors.length);alert('設定したBG時間を実行できないため確定できません。\n'+(failure?.errors.join('\n')||'設定を見直してください'));return}save();alert('設定を保存しました。計測するを押すと結果が確定します')}else if(act==='saveSettings'){if(!s.start){alert('イベント開始日を入力してください');return}if(!(s.eventSeconds>0)){alert('イベント曲時間を入力してください');return}if(s.bonus<0||s.bonus>9999){alert('特攻値は0～9999%で入力してください');return}s.initialized=true;s.day=activeIndex();save();page='play'}else if(act==='end'){$('confirmModal').hidden=false;return}else if(act==='back'){page='play';playTab='measure';}render()});
+ const d=dayData(s.day),i=+b.dataset.index;if(page==='play'&&!todayEditable()&&['activityMode','activityConfirm','confirmDay','addActivity','removeActivity'].includes(act))return;if(act==='finishAccuracy'){if(s.mode==='both'&&d.accuracy.reduce((a,v)=>a+v,0)!==100){alert('精度の合計を100%にしてください');return}tabDone(d).accuracy=true;save();playTab='sleep'}else if(act==='finishSleep'){let err=s.day===s.days-1?null:sleepScheduleError(d);if(!err&&s.day<s.days-1){const check=simulate();err=check.days[s.day]?.errors.find(message=>message.includes('就寝中BGが起床時刻より早く終了します'))||null;}if(err){alert(err);return}tabDone(d).sleep=true;save();playTab='bg'}else if(act==='finishBg'){if(!tabDone(d).sleep){alert('先に起床・就寝時刻を確定してください');playTab='sleep';render();return}const err=(s.day===s.days-1?null:sleepScheduleError(d,true))||allActivityTimeError(d);if(err){alert('BG設定不可：'+err);return}if(d.activities.some(a=>sec(a.duration)>0&&!a.confirmed)){alert('BG時間を設定した項目は、それぞれ「決定」を押してください');return}const check=simulate();if(!check.valid){const issue=check.days.find(x=>x.errors.length);alert('BG設定不可：'+(issue?.errors.join('\n')||'日中・就寝中の実行条件を満たしていません'));return}tabDone(d).bg=true;save();playTab='measure'}else if(act==='measureDay'){if(!Object.values(tabDone(d)).every(Boolean)){alert('3つの設定タブを決定してください');return}const check=simulate();if(!check.valid){const failure=check.days.find(x=>x.errors.length);alert('計測できません。\n'+(failure?.errors.join('\n')||'設定を見直してください'));return}confirmMeasuredDay(s.day,check);page='result'}else if(act==='mode'){s.mode=b.dataset.value;save()}else if(act==='network'){s.network=+b.dataset.value;save()}else if(act==='prev')s.day=Math.max(0,s.day-1);else if(act==='next')s.day=Math.min(s.days-1,s.day+1);else if(act==='addActivity'){const names=TYPES.filter(name=>!d.activities.some(a=>a.name===name));const name=names[0]||`追加項目${d.activities.length+1}`;d.activities.push(newActivity(name));resetTab(d,'bg');save()}else if(act==='removeActivity'){if(i>0&&i<d.activities.length){d.activities.splice(i,1);resetTab(d,'bg');save()}}else if(act==='activityMode'){d.activities[i].mode=b.dataset.value;d.activities[i].confirmed=false;resetTab(d,'bg');save()}else if(act==='activityConfirm'){if(Number.isInteger(i)&&i>=0&&i<d.activities.length){if(!d.activities[i].name.trim()){alert('項目名を入力してください');return}const error=activityTimeError(d,i);if(error){alert(error);return}d.activities[i].confirmed=true;resetTab(d,'bg');save()}}else if(act==='confirmDay'){if(s.mode==='both'&&d.accuracy.reduce((a,v)=>a+v,0)!==100){alert('精度の合計を100%にしてください');return}if(d.activities.some(a=>!a.name.trim())){alert('BG項目名を入力してください');return}const timeError=allActivityTimeError(d);if(timeError){alert(timeError);return}if(d.activities.some(a=>sec(a.duration)>0&&!a.confirmed)){alert('実行時間を入力した項目は「決定」を押してください');return}const check=simulate();if(!check.valid){const failure=check.days.find(x=>x.errors.length);alert('設定したBG時間を実行できないため確定できません。\n'+(failure?.errors.join('\n')||'設定を見直してください'));return}save();alert('設定を保存しました。計測するを押すと結果が確定します')}else if(act==='saveSettings'){if(!s.start){alert('イベント開始日を入力してください');return}if(!(s.eventSeconds>0)){alert('イベント曲時間を入力してください');return}if(s.bonus<0||s.bonus>9999){alert('特攻値は0～9999%で入力してください');return}s.initialized=true;s.day=activeIndex();save();page='play'}else if(act==='end'){$('confirmModal').hidden=false;return}else if(act==='back'){page='play';playTab='measure';}render()});
 document.addEventListener('change',e=>{const f=e.target.dataset.field;if(f){if(f==='start')s.start=e.target.value;else s[f]=+e.target.value;save();render()}const nameIndex=e.target.dataset.activityName;if(nameIndex!==undefined){if(!todayEditable())return;const d=dayData(s.day);const name=e.target.value.trim();if(!name){alert('項目名を入力してください');render();return}if(d.activities.some((a,i)=>i!==+nameIndex&&a.name===name)){alert('同じ項目名は使用できません');render();return}d.activities[+nameIndex].name=name;d.activities[+nameIndex].confirmed=false;resetTab(d,'bg');save();render();return}const idx=e.target.dataset.accuracy;if(idx!==undefined){if(!todayEditable())return;const d=dayData(s.day);d.accuracy[+idx]=+e.target.value;resetTab(d,'accuracy');save();render()}});
 $('wheelCancel').onclick=()=>$('wheelModal').hidden=true;$('wheelOk').onclick=wheelSave;$('endCancel').onclick=()=>$('confirmModal').hidden=true;$('endOk').onclick=()=>{localStorage.removeItem(KEY);s=defaults();page='setup';$('confirmModal').hidden=true;render()};render();
+(function(){
+const H=44;let commits=[];const prev=wheelOpen;
+function build(id){
+ const sel=$(id),label=sel.parentElement;
+ label.querySelectorAll('.wheel').forEach(n=>n.remove());
+ const wrap=document.createElement('div');wrap.className='wheel';
+ const sc=document.createElement('div');sc.className='wheel-scroll';sc.setAttribute('role','listbox');
+ const n=sel.options.length,C=9,mid=4,frag=document.createDocumentFragment(),items=[];
+ for(let k=0;k<n*C;k++){const b=document.createElement('div');b.className='wheel-item';b.textContent=sel.options[k%n].textContent;b.dataset.i=k;frag.appendChild(b);items.push(b)}
+ sc.appendChild(frag);
+ const band=document.createElement('div');band.className='wheel-band';
+ wrap.append(sc,band);label.appendChild(wrap);
+ let timer=0,raf=0;
+ let pl=0,ph=-1;
+ const paint=()=>{raf=0;const c=sc.scrollTop/H,lo=Math.max(0,Math.floor(c)-4),hi=Math.min(items.length-1,Math.ceil(c)+4);for(let i=Math.min(lo,pl);i<=Math.max(hi,ph);i++){const el=items[i];if(!el)continue;if(i<lo||i>hi){el.style.opacity='';el.style.transform='';el.classList.remove('on');continue}const d=Math.max(-3,Math.min(3,i-c)),a=Math.abs(d);el.style.opacity=Math.max(.15,1-a*.3);el.style.transform='perspective(320px) rotateX('+(-d*24)+'deg) scale('+(1-a*.04)+')';el.classList.toggle('on',a<.5)}pl=lo;ph=hi};
+ const idx=()=>Math.round(sc.scrollTop/H);
+ const commit=()=>{sel.selectedIndex=((idx()%n)+n)%n};
+ // 端に近づいたら、同じ数字の真ん中のセットへ静かに戻す（ぐるぐる回るホイール）
+ const recenter=()=>{const i=idx();if(i<n*3||i>=n*6)sc.scrollTop=(n*mid+((i%n)+n)%n)*H};
+ commits.push(commit);
+ sc.addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(paint);clearTimeout(timer);timer=setTimeout(()=>{commit();recenter()},90)},{passive:true});
+ sc.addEventListener('click',e=>{const t=e.target.closest('.wheel-item');if(t)sc.scrollTo({top:t.dataset.i*H,behavior:'smooth'})});
+ sc.scrollTop=(n*mid+sel.selectedIndex)*H;paint();
+}
+wheelOpen=function(t,i){prev(t,i);commits=[];['wh','wm','ws'].forEach(build)};
+// 決定を押した瞬間にも、ホイールの位置を確定してから保存する
+document.addEventListener('click',e=>{if(e.target.closest('#wheelOk'))commits.forEach(f=>f())},true);
+})();
+(function(){
+let raf=0,tl=null,tlKey='',T=0,playing=false,last=0,dur=30,samples=[],maxInv=1;
+const N=480,q=id=>document.getElementById(id);
+function buildMixed(){
+ let r=simulate();if(!r.valid)return null;
+ // 計測済みの日は保存時点の結果で実行順が無い場合があるので、今の設定（精度・就寝～起床・BG時間）で計算し直して使う
+ let recomputed=false,staleFail=false;
+ // 計測済みの日も、いまの設定（精度・就寝～起床・BG時間）で計算し直して再生する
+ if(s.snapshots&&Object.keys(s.snapshots).length){const sv=s.snapshots;s.snapshots={};let r2=null;try{r2=simulate()}catch(err){}finally{s.snapshots=sv}if(r2&&r2.valid){r=r2;recomputed=true}else staleFail=(r2&&r2.days.flatMap((y,k)=>y.errors.map(m=>(k+1)+'日目：'+m))[0])||'計算エラー'}
+ const song=SONGS[s.song]||SONGS[0],gain=TABLE[song[2]][5],origin=54000;
+ const seg=[];let t=0,inv=0,n=0,e=0,nm=0,em=0,p=0,curDay=0;
+ const add=(type,d,delta,pg,label,cls,bg)=>{if(!(d>0))return;seg.push({t,d,type,i0:inv,i1:inv+delta,n,e,nm,em,p,pg,label,cls,day:curDay});t+=d;inv+=delta;if(type==='n'){if(bg)n++;else nm++}else if(type==='e'){if(bg)e++;else em++;p+=pg}};
+ // 旧データの確定済み日（実行順の記録なし）は回数から目安の順番を作る
+ // 就寝前の手打ちは、交互にしないで「通常曲を上限まで→イベント曲をまとめて」のブロック順に並べる（回数と時間はそのまま）
+ const reorderTail=(log,v0)=>{
+  let last=-1;log.forEach((a,k)=>{if(a[1]===1&&a[5]!==1)last=k});
+  const from=last+1;let to=from;while(to<log.length&&log[to][5]!==1)to++;
+  const tail=log.slice(from,to);
+  if(tail.length<2)return log;
+  let v=v0;for(let k=0;k<from;k++)v+=log[k][3];
+  const nq=tail.filter(a=>a[0]==='n'),eq=tail.filter(a=>a[0]==='e'),out=[];
+  while(nq.length||eq.length){
+   if(nq.length&&v+nq[0][3]<=ITEM_CAP){while(nq.length&&v+nq[0][3]<=ITEM_CAP){const a=nq.shift();out.push(a);v+=a[3]}}
+   else if(eq.length&&v>=ITEM_COST){
+    const room=nq.length?Math.max(1,Math.ceil((v+nq.length*nq[0][3]-ITEM_CAP)/ITEM_COST)):eq.length;
+    const k=Math.min(eq.length,Math.floor(v/ITEM_COST),room);
+    for(let q=0;q<k;q++){out.push(eq.shift());v-=ITEM_COST}
+   }else return log;
+  }
+  return log.slice(0,from).concat(out,log.slice(to));
+ };
+ const fallback=(x,v0)=>{
+  const bgN=x.normalRuns||0,mN=x.manualNormal||0,mg=mN?Math.round((x.earned-bgN*gain)/mN):0;
+  const nq=[],eq=[],out=[];let v=v0;
+  for(let k=0;k<bgN;k++)nq.push(['n',1,song[1]+15,gain,0,0]);
+  for(let k=0;k<mN;k++)nq.push(['n',0,song[1]+s.network,mg,0,0]);
+  const dE=Math.max(0,(x.eventRuns||0)-(x.sleepEventRuns||0));
+  for(let k=0;k<dE;k++)eq.push(['e',1,s.eventSeconds+15,-ITEM_COST,eventPt(s.bonus),0]);
+  for(let k=0;k<(x.manualEvent||0);k++)eq.push(['e',0,s.eventSeconds+s.network+1,-ITEM_COST,eventPt(s.bonus+144),0]);
+  while(nq.length||eq.length){
+   let a;
+   if(eq.length&&v>=ITEM_COST&&(!nq.length||v+nq[0][3]>ITEM_CAP||v>=114*ITEM_COST))a=eq.shift();
+   else if(nq.length&&v+nq[0][3]<=ITEM_CAP)a=nq.shift();
+   else a=(eq.length?eq:nq).shift();
+   out.push(a);v+=a[3];
+  }
+  for(let k=0;k<(x.sleepEventRuns||0);k++)out.push(['e',1,k===x.sleepEventRuns-1?s.eventSeconds:s.eventSeconds+15,-ITEM_COST,eventPt(s.bonus),1]);
+  return out;
+ };
+ r.days.forEach((x,i)=>{
+  curDay=i;const day=i+1,log0=Array.isArray(x.log)?x.log:fallback(x,inv),log=reorderTail(log0,inv);
+  const name=a=>day+'日目 '+(a[0]==='n'?(a[1]?'通常曲BG':'通常曲（手打ち）'):(a[5]===1?'就寝中 イベント曲BG':a[1]?'イベント曲BG':'イベント曲（手打ち）'));
+  const startRel=(x.dayStart==null?origin:x.dayStart)-origin;
+  if(startRel>t)add('i',startRel-t,0,0,day+'日目 待機','idle');
+  for(const a of log){if(a[5]!==1)add(a[0],a[2],a[3],a[4],name(a),a[0]==='e'?'ev':'',a[1])}
+  const bedRel=(x.adjustedBedAt!=null?x.adjustedBedAt:x.dayEnd)-origin;
+  if(bedRel>t)add('i',bedRel-t,0,0,day+'日目 空き時間（待機）','idle');
+  for(const a of log){if(a[5]===1)add(a[0],a[2],a[3],a[4],name(a),'ev',a[1])}
+ });
+ const AL=['FE','FC','A','B','C','D'];
+ const dayInfo=r.days.map((x,i)=>{
+  const d=predictionData(i),acc=(d.accuracy||[]).map((v,j)=>v?AL[j]+' '+v+'%':'').filter(Boolean).join(' / ')||'-';
+  const bg=(d.activities||[]).filter(a=>a.confirmed&&sec(a.duration)>0).map(a=>(a.mode==='event'?'イベントBG ':'通常BG ')+a.duration.slice(0,5)).join('、')||'なし';
+  return (i+1)+'日目の設定：精度 '+acc+'｜就寝 '+d.bedtime+' → 起床 '+String(d.wake)+'｜日中BG '+bg;
+ });
+ return{seg,total:t,normals:n,events:e,nm,em,mixed:true,dayInfo,note:recomputed?'※計測済みの日も、いまの設定で計算し直して再生しています':(staleFail?'※いまの設定では計算が成立しません（'+staleFail+'）。計測済みの結果で表示しています':''),pt:p,clock:T=>fmt((origin+T)%86400),totalLabel:'（実際の時刻で表示・全体 '+fmt(t)+'）'};
+}
+function build(){
+ if(s.mode==='both')return buildMixed();
+ const r=simulateFullBackground();if(!r.valid)return null;
+ const song=SONGS[s.song],gain=TABLE[song[2]][5],pt=eventPt(s.bonus),nt=song[1]+15,et=s.eventSeconds+15,target=r.eventRuns,normals=Math.ceil(target*ITEM_COST/gain);
+ const seg=[];let t=0,inv=0,n=0,e=0,sets=0,p=0;
+ const push=(type,d,delta)=>{seg.push({t,d,type,i0:inv,i1:inv+delta,n,e,p,sets});t+=d;inv+=delta;if(type==='n')n++;else{e++;p+=pt}};
+ const runSet=c=>{sets++;for(let k=0;k<c;k++)push('e',k===c-1?et-15:et,-ITEM_COST)};
+ while(e<target){
+  const can=Math.min(114,target-e,Math.floor(inv/ITEM_COST));
+  if(can>0&&(inv+gain>ITEM_CAP||n>=normals||inv>=114*ITEM_COST))runSet(can);
+  else if(n<normals&&inv+gain<=ITEM_CAP)push('n',nt,gain);
+  else if(can>0)runSet(can);
+  else break;
+ }
+ return{seg,total:t,normals:n,events:e,pt:p,perEvent:pt,sets};
+}
+function stateAt(x){
+ const seg=tl.seg;if(!seg.length)return{g:null,f:0,inv:0,pt:0,n:0,e:0,done:true};
+ if(x>=tl.total){const g=seg[seg.length-1];return{g,f:1,inv:g.i1,pt:tl.pt,n:tl.normals,e:tl.events,nm:tl.nm||0,em:tl.em||0,done:true}}
+ let lo=0,hi=seg.length-1;
+ while(lo<hi){const m=(lo+hi+1)>>1;if(seg[m].t<=x)lo=m;else hi=m-1}
+ const g=seg[lo],f=Math.min(1,Math.max(0,(x-g.t)/g.d));
+ return{g,f,inv:g.i0,pt:g.p,n:g.n,e:g.e,nm:g.nm||0,em:g.em||0,done:false};
+}
+function setupCanvas(){
+ const c=q('simChart');if(!c)return;
+ const dpr=window.devicePixelRatio||1,w=c.clientWidth||320,h=150;
+ c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);c.getContext('2d').setTransform(dpr,0,0,dpr,0,0);
+}
+function drawChart(st){
+ const c=q('simChart');if(!c)return;
+ const ctx=c.getContext('2d'),w=c.clientWidth||320,h=150,pad=8;
+ const X=i=>pad+i/N*(w-2*pad),Y=v=>h-pad-(v/maxInv)*(h-2*pad);
+ ctx.clearRect(0,0,w,h);
+ ctx.beginPath();samples.forEach((v,i)=>i?ctx.lineTo(X(i),Y(v)):ctx.moveTo(X(i),Y(v)));
+ ctx.strokeStyle='#cdbbea';ctx.lineWidth=1.5;ctx.stroke();
+ const pos=Math.min(N,T/tl.total*N),k=Math.floor(pos);
+ ctx.beginPath();ctx.moveTo(X(0),Y(samples[0]));
+ for(let i=1;i<=k;i++)ctx.lineTo(X(i),Y(samples[i]));
+ const cx=X(pos),cy=Y(st.inv);ctx.lineTo(cx,cy);
+ const stroke=ctx.createLinearGradient(pad,0,w-pad,0);stroke.addColorStop(0,'#7c3aed');stroke.addColorStop(.6,'#db2777');stroke.addColorStop(1,'#f59e0b');
+ ctx.strokeStyle=stroke;ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.stroke();
+ ctx.lineTo(cx,h-pad);ctx.lineTo(X(0),h-pad);ctx.closePath();
+ const fill=ctx.createLinearGradient(0,0,0,h);fill.addColorStop(0,'rgba(168,85,247,.32)');fill.addColorStop(1,'rgba(168,85,247,.02)');
+ ctx.fillStyle=fill;ctx.fill();
+ ctx.beginPath();ctx.arc(cx,cy,5,0,6.2832);ctx.fillStyle='#db2777';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+}
+function paint(){
+ if(!tl||!q('simClock'))return;
+ const st=stateAt(T),g=st.g;
+ q('simClock').textContent=tl.clock?tl.clock(T):fmt(T);
+ q('simBarFill').style.width=(T/tl.total*100)+'%';
+ q('simInv').textContent=num(st.inv)+' \u500b';
+ q('simInvFill').style.width=Math.min(100,st.inv/ITEM_CAP*100)+'%';
+ q('simPt').textContent=num(st.pt);
+ q('simN').textContent=num(st.n)+' \u56de';
+ q('simE').textContent=num(st.e)+' \u56de';
+ const now=q('simNow');
+ if(st.done){now.className='sim-now done';now.innerHTML='<i></i>\u5b8c\u4e86\uff1a\u3059\u3079\u3066\u306e\u30d7\u30ec\u30a4\u304c\u7d42\u308f\u308a\u307e\u3057\u305f'}
+ else if(g.type==='n'){now.className='sim-now';now.innerHTML='<i></i>\u901a\u5e38\u66f2BG\u5b9f\u884c\u4e2d\uff08'+num(g.n+1)+'\u56de\u76ee\uff09\u30a2\u30a4\u30c6\u30e0\u3092\u7372\u5f97'}
+ else{now.className='sim-now ev';now.innerHTML='<i></i>\u30a4\u30d9\u30f3\u30c8\u66f2BG\u5b9f\u884c\u4e2d\uff08\u30bb\u30c3\u30c8'+num(g.sets)+'\u30fb'+num(g.e+1)+'\u56de\u76ee\uff09'}
+ const seek=q('simSeek');if(document.activeElement!==seek)seek.value=Math.round(T/tl.total*1000);
+ if(g&&g.label&&!st.done){now.className='sim-now'+(g.cls?' '+g.cls:'');now.innerHTML='<i></i>'+g.label}
+ if(q('simInfo')&&g&&tl.dayInfo)q('simInfo').textContent=(tl.dayInfo[g.day]||'')+(tl.note?'\n'+tl.note:'');
+ if(q('simNM')){q('simNM').textContent=num(st.nm)+' 回';q('simEM').textContent=num(st.em)+' 回'}
+ drawChart(st);
+}
+function tick(ts){
+ if(!playing)return;
+ T=Math.min(tl.total,T+(ts-last)/1000*tl.total/dur);last=ts;paint();
+ if(T>=tl.total){playing=false;q('simPlay').textContent='\u25b6 \u3082\u3046\u4e00\u5ea6'}else raf=requestAnimationFrame(tick);
+}
+function speedLabel(){const e=q('simSpeed');if(e&&tl)e.textContent='\u7d04'+Math.round(tl.total/dur).toLocaleString('ja-JP')+'\u500d\u901f\u3067\u518d\u751f'}
+function initSim(){
+ cancelAnimationFrame(raf);playing=false;T=0;
+ if(!q('simChart'))return;
+ const key=JSON.stringify([s.song,s.eventSeconds,s.bonus]);
+ if(!tl||tlKey!==key||s.mode==='both'){tl=build();tlKey=key}
+ if(!tl)return;
+ samples=[];maxInv=1;
+ for(let i=0;i<=N;i++){const v=stateAt(i/N*tl.total).inv;samples.push(v);if(v>maxInv)maxInv=v}
+ maxInv*=1.08;
+ q('simTotal').textContent=tl.totalLabel||('/ '+fmt(tl.total));
+ if(tl.mixed&&!q('simInfo')){const info=document.createElement('div');info.id='simInfo';info.className='sim-info';q('simNow').insertAdjacentElement('afterend',info)}
+ if(tl.mixed){const box=q('simPt').parentElement.parentElement;box.classList.add('mixed');box.innerHTML=`<div class='wide'><small>イベントpt</small><b id='simPt'>0</b></div><div><small>通常曲<br>BG</small><b id='simN'>0 回</b></div><div><small>通常曲<br>手打ち</small><b id='simNM'>0 回</b></div><div><small>イベント曲<br>BG</small><b id='simE'>0 回</b></div><div><small>イベント曲<br>手打ち</small><b id='simEM'>0 回</b></div>`}
+ q('simDur').value=String(dur);speedLabel();
+ setupCanvas();paint();
+ q('simPlay').onclick=()=>{
+  if(T>=tl.total)T=0;
+  playing=!playing;
+  q('simPlay').textContent=playing?'\u23f8 \u4e00\u6642\u505c\u6b62':'\u25b6 \u518d\u751f';
+  if(playing){last=performance.now();raf=requestAnimationFrame(tick)}
+ };
+ q('simReset').onclick=()=>{playing=false;cancelAnimationFrame(raf);T=0;q('simPlay').textContent='\u25b6 \u518d\u751f';paint()};
+ q('simDur').onchange=e=>{dur=+e.target.value;speedLabel()};
+ q('simSeek').oninput=e=>{T=+e.target.value/1000*tl.total;paint()};
+}
+const SIMHTML="<section class='panel'><h2>\u30b7\u30df\u30e5\u30ec\u30fc\u30b7\u30e7\u30f3\u518d\u751f</h2><div id='simNow' class='sim-now'><i></i>\u518d\u751f\u3092\u62bc\u3059\u3068\u958b\u59cb\u3057\u307e\u3059</div><div class='sim-clock' id='simClock'>00:00:00</div><div class='sim-sub'>\u7d4c\u904e\u6642\u9593 <span id='simTotal'></span></div><div class='sim-bar'><i id='simBarFill'></i></div><canvas id='simChart' height='150'></canvas><div class='sim-gauge-top'><span>\u6240\u6301\u30a2\u30a4\u30c6\u30e0</span><b id='simInv'>0 \u500b</b></div><div class='sim-bar big'><i id='simInvFill'></i></div><div class='sim-stats'><div><small>\u30a4\u30d9\u30f3\u30c8pt</small><b id='simPt'>0</b></div><div><small>\u901a\u5e38\u66f2BG</small><b id='simN'>0 \u56de</b></div><div><small>\u30a4\u30d9\u30f3\u30c8\u66f2BG</small><b id='simE'>0 \u56de</b></div></div><input id='simSeek' type='range' min='0' max='1000' value='0' aria-label='\u6642\u9593\u3092\u79fb\u52d5'><div class='sim-ctrl'><button class='primary' id='simPlay'>\u25b6 \u518d\u751f</button><button class='ghost' id='simReset'>\u23ee \u6700\u521d\u304b\u3089</button><select id='simDur' aria-label='\u518d\u751f\u306e\u901f\u3055'><option value='15'>15\u79d2\u3067\u4e00\u901a\u308a\uff08\u901f\u3044\uff09</option><option value='30'>30\u79d2\u3067\u4e00\u901a\u308a</option><option value='60'>60\u79d2\u3067\u4e00\u901a\u308a</option><option value='120'>2\u5206\u3067\u4e00\u901a\u308a\uff08\u3086\u3063\u304f\u308a\uff09</option></select></div><p class='small' id='simSpeed'></p></section>";
+const _rr=renderResult;
+renderResult=function(){
+ const h=_rr();
+ if(s.mode!=='both'||h.includes('計算エラー'))return h;
+ const i=h.indexOf('<h2>日別獲得ポイント'),j=i<0?-1:h.lastIndexOf('<section',i);
+ return j<0?h:h.slice(0,j)+SIMHTML+h.slice(j);
+};
+const _frb=renderFullBgResult;
+renderFullBgResult=function(){
+ const h=_frb();
+ if(h.includes('\u8a08\u7b97\u30a8\u30e9\u30fc'))return h;
+ const i=h.indexOf('<h2>225\u6642\u9593\u306e\u30d7\u30ec\u30a4\u5185\u8a33'),j=i<0?-1:h.lastIndexOf('<section',i);
+ return j<0?h:h.slice(0,j)+SIMHTML+h.slice(j);
+};
+const _render=render;
+render=function(){cancelAnimationFrame(raf);playing=false;_render();initSim()};
+window.addEventListener('resize',()=>{if(q('simChart')&&tl){setupCanvas();paint()}});
+})();
