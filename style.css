@@ -5,3 +5,4 @@
 
 .counterGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.counterGrid input{min-width:0;width:100%;box-sizing:border-box}
 .counterGrid>div{min-width:0;border:1px solid #e4d9ee;border-radius:10px;padding:8px}.counterGrid img{width:100%;height:auto;margin-top:8px}.counterGrid button{width:100%;font-size:13px;margin-top:8px}.counterGrid input[type=file]{padding:5px;font-size:12px}.counterGrid h3{overflow-wrap:anywhere;font-size:15px}.counterGrid>div:last-child h3{color:#ad505e}
+#comparison .player:nth-child(1) .metric:nth-of-type(1) strong,#comparison .player:nth-child(2) .metric:nth-of-type(1) strong{color:#237650}#comparison .player .metric:nth-of-type(2) strong{color:#ad505e}#comparison details summary{cursor:pointer;color:#8050b2;font-size:13px}
