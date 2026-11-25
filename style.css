@@ -2,3 +2,5 @@
 .analysisExtra{margin-top:14px;border:1px solid #ded4e9;border-radius:10px;padding:12px}.analysisExtra summary,.compactInterval summary{cursor:pointer;color:#7645a6;font-weight:600;padding:8px 0}.compactInterval .metric strong{color:#7645a6;font-size:1.6rem}.compactInterval p{margin:8px 0}.compactInterval details{border-top:1px solid #e5ddec;margin-top:10px}input[readonly]{background:#f3eff8}
 
 #balances,#comparison{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}.player{min-width:0;border:1px solid #e4d9ee;border-radius:12px;padding:9px;overflow-wrap:anywhere}.player h3{font-size:15px;margin:4px 0;color:#8050b2}.player.rival h3,.player.rival .metric strong{color:#ad505e}.player .metric{padding:8px}.player .metric strong,.player .compactInterval .metric strong{font-size:clamp(15px,4vw,22px)}.player .metric span,.player p{font-size:12px}.player small{font-size:11px}@media(max-width:400px){main{padding:7px}section{padding:10px}.player{padding:6px}}
+
+.counterGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.counterGrid input{min-width:0;width:100%;box-sizing:border-box}
