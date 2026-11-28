@@ -6,7 +6,7 @@ function tab(id){document.querySelectorAll('main section').forEach(s=>s.hidden=s
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
 function localDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,19)}
 function initialFields(){}
-function reset(){for(const k of ['me','rival']){const p=$(k+'ProfilePreview');p.hidden=true;p.removeAttribute('src');$(k+'ProfileStatus').textContent='';}editing=null;selected=null;$('recordForm').reset();$('file').value='';$('preview').hidden=true;$('preview').removeAttribute('src');$('date').value=localDate(new Date());$('status').textContent='';$('raw').value='';$('candidates').replaceChildren();initialFields()}
+function reset(){for(const k of ['me','rival']){$(k+'Profile').value='';const p=$(k+'ProfilePreview');p.hidden=true;p.removeAttribute('src');$(k+'ProfileStatus').textContent='';}editing=null;selected=null;$('recordForm').reset();$('file').value='';$('preview').hidden=true;$('preview').removeAttribute('src');$('date').value=localDate(new Date());$('status').textContent='';$('raw').value='';$('candidates').replaceChildren();initialFields()}
 function labels(){if(!state.settings)return;$('meLabel').textContent=state.settings.me+' のpt';$('rivalLabel').textContent=state.settings.rival+' のpt';$('meCounterTitle').textContent='自分：'+state.settings.me;$('rivalCounterTitle').textContent='相手：'+state.settings.rival}
 if(state.settings)fields.forEach(k=>$(k).value=state.settings[k]??(k==='myBonus'?state.settings.bonus:''));labels();reset();tab(state.settings?'analysis':'settings');
 $('settingsForm').onsubmit=e=>{e.preventDefault();let s=Object.fromEntries(fields.map(k=>[k,$(k).value.trim()]));if(!s.me||!s.rival||s.me===s.rival){alert('異なる名前を入力してください');return}if(state.settings&&state.records.length&&(s.me!==state.settings.me||s.rival!==state.settings.rival)){alert('記録がある間は名前を変更できません。');return}state.settings=s;save();labels();tab('analysis')};
@@ -45,7 +45,7 @@ function renderIntervals(rows,s){
  a.value=rows.at(-2).id;b.value=rows.at(-1).id;
  function compare(){out.replaceChildren();const x=rows.find(r=>String(r.id)===a.value),y=rows.find(r=>String(r.id)===b.value);if(!x||!y||x.t>=y.t){$('elapsed').textContent='終了時刻は開始時刻より後にしてください。';return}
  $('elapsed').textContent='経過時間：'+duration(y.t-x.t);
- for(const key of ['me','rival']){const z=analyze(x,y,s,key),d=node('div','','player '+key);d.append(node('h3',(key==='me'?'自分：':'相手：')+s[key]));metric(d,'取得アイテム数（推定）',showRange(z.gain));metric(d,'消費アイテム数（反映済み）',showRange(z.used));metric(d,'アイテム収支（推定）',showRange(z.net));const detail=node('details','');detail.append(node('summary','計算詳細'),node('p','増加pt：'+fmt(z.delta)));if(z.v){detail.append(node('p','通常曲：'+z.v.normal.join('～')+' 回'),node('p','イベント曲：'+z.v.event.join('～')+' 回'),node('p','フルコン増加：'+fmt(z.v.fc)+' 回'),... [['通常曲手打ち','normalHand'],['通常曲バクグラ（推定）','normalBG'],['イベント曲手打ち','eventHand'],['イベント曲バクグラ','eventBG']].map(([label,k])=>node('p',label+'：'+[...new Set(z.v[k])].join('～')+' 回')))}if(z.reason)detail.append(node('p',z.reason));d.append(detail);out.append(d)}}
+ for(const key of ['me','rival']){const z=analyze(x,y,s,key),d=node('div','','player '+key);d.append(node('h3',(key==='me'?'自分：':'相手：')+s[key]));metric(d,'取得アイテム数（推定）',showRange(z.gain));metric(d,'消費アイテム数（反映済み）',showRange(z.used));metric(d,'アイテム収支（推定）',showRange(z.net));const detail=node('details','');detail.append(node('summary','計算詳細'),node('p','増加pt：'+fmt(z.delta)));if(z.v){detail.append(node('p','通常曲：'+z.v.normal.join('～')+' 回'),node('p','イベント曲：'+z.v.event.join('～')+' 回'),node('p','フルコン増加：'+fmt(z.v.fc)+' 回'),... [['通常曲手打ち','normalHand'],['通常曲バクグラ（推定）','normalBG'],['イベント曲手打ち','eventHand'],['イベント曲バクグラ','eventBG']].map(([label,k])=>node('p',label+'：'+[...new Set(z.v[k])].join('～')+' 回')))}if(z.v)detail.append(node('p','通常曲バクグラは残り時間から推定。混合区間は0回～推定上限（未プレイとの区別不可）。手打ち待機は26秒／27秒を仮定。'));if(z.reason)detail.append(node('p',z.reason));d.append(detail);out.append(d)}}
  a.onchange=b.onchange=compare;compare();
  for(const key of ['me','rival']){const d=node('div','','entry');d.append(node('h3',s[key]));const obs=rows.filter(r=>r[key]!=null);if(obs.length<2){d.append(node('p','観測不足'));total.append(d);continue}const sums={gain:[0,0],used:[0,0]},missing={gain:0,used:0};const history=node('details','');history.append(node('summary','区間別履歴'));for(let i=1;i<obs.length;i++){const z=analyze(obs[i-1],obs[i],s,key);for(const k of ['gain','used']){if(z[k]){sums[k][0]+=z[k][0];sums[k][1]+=z[k][1]}else missing[k]++}history.append(node('p',new Date(obs[i-1].t).toLocaleString()+' ～ '+new Date(obs[i].t).toLocaleString()+'：取得 '+showRange(z.gain)+' / 消費 '+showRange(z.used)))}for(const [k,label] of [['gain','累計取得数（推定）'],['used','累計消費数（反映済み）']])metric(d,label,missing[k]===obs.length-1?'算出不可':showRange(sums[k]),missing[k]?'算出可能区間のみ・未算出 '+missing[k]+' 区間':'');d.append(history);total.append(d)}
 }
@@ -58,13 +58,20 @@ function counterAnalysis(a,b,s,key,q){
  for(const x of q.exact||[]){
   const hand=dc-x.m; // バクグラはクリア回数に加算されない
   if(hand<0||df!==null&&df>hand)continue;
-  const bgNormal=dc===0&&x.b===0&&x.m===0?Math.max(0,Math.floor(((b.t-a.t)/1000+15)/(Number(s.normal)+15))):0;
+  // 混合区間も、既知のプレイ時間を除いた残りから通常バクグラを推定。
+  // 手打ちロードは普通回線（通常26秒・イベント27秒）を仮定。
+  const elapsed=(b.t-a.t)/1000;
+  const normalSec=Number(s.normal),eventSec=Number(s.event);
+  const spent=hand*(normalSec+26)+x.m*(eventSec+27)+Math.max(0,x.b*(eventSec+15)-15);
+  const remaining=Math.max(0,elapsed-spent);
+  const bgNormal=Math.max(0,Math.floor((remaining+15)/(normalSec+15)));
+  const bgMin=dc===0&&x.b===0&&x.m===0?bgNormal:0;
   const fmin=df??0,fmax=df??hand;
-  candidates.push({n:hand+bgNormal,hand,bgNormal,b:x.b,m:x.m,fmin,fmax,used:(x.b+x.m)*875,glo:fmin*930+(hand-fmin)*836+bgNormal*774,ghi:fmax*930+(hand-fmax)*836+bgNormal*774});
+  candidates.push({n:hand+bgNormal,normalMin:hand+bgMin,hand,bgNormal,bgMin,b:x.b,m:x.m,fmin,fmax,used:(x.b+x.m)*875,glo:fmin*930+(hand-fmin)*836+bgMin*774,ghi:fmax*930+(hand-fmax)*836+bgNormal*774});
  }
  if(!candidates.length)return {invalid:true};
  const bounds=k=>[Math.min(...candidates.map(x=>x[k])),Math.max(...candidates.map(x=>x[k]))];
- return {normal:bounds('n'),normalHand:bounds('hand'),normalBG:bounds('bgNormal'),eventHand:bounds('m'),eventBG:bounds('b'),event:[Math.min(...candidates.map(x=>x.b+x.m)),Math.max(...candidates.map(x=>x.b+x.m))],used:bounds('used'),gain:[bounds('glo')[0],bounds('ghi')[1]],fc:df,candidates};
+ return {normal:[bounds('normalMin')[0],bounds('n')[1]],normalHand:bounds('hand'),normalBG:[bounds('bgMin')[0],bounds('bgNormal')[1]],eventHand:bounds('m'),eventBG:bounds('b'),event:[Math.min(...candidates.map(x=>x.b+x.m)),Math.max(...candidates.map(x=>x.b+x.m))],used:bounds('used'),gain:[bounds('glo')[0],bounds('ghi')[1]],fc:df,candidates};
 }
 function range(lo,hi){return fmt(lo)+(lo===hi?'':' ～ '+fmt(hi))+' 個'}
 function render(){const rows=state.records,s=state.settings;for(const id of ['summary','records','chart'])$(id).replaceChildren();if(!s)return;const a=rows.filter(r=>r.me!=null).at(-1),b=rows.filter(r=>r.rival!=null).at(-1);metric($('summary'),'pt差（自分－相手）',a&&b?fmt(a.me-b.rival):'未取得',a&&b&&a.t!==b.t?'異なる観測時刻の参考差':'');renderIntervals(rows,s);for(const r of rows.slice().reverse()){const d=node('div','','entry');d.append(node('b',new Date(r.t).toLocaleString()),node('p',s.me+'：'+fmt(r.me)+' / '+s.rival+'：'+fmt(r.rival)),node('small','自分 クリア '+fmt(r.meClear)+' / FC '+fmt(r.meFC)+' ｜ 相手 クリア '+fmt(r.rivalClear)+' / FC '+fmt(r.rivalFC)));const edit=node('button','編集');edit.onclick=()=>{reset();editing=r.id;$('date').value=localDate(new Date(r.t));$('mp').value=r.me??'';$('rp').value=r.rival??'';for(const k of ['meClear','meFC','rivalClear','rivalFC'])$(k).value=r[k]??'';tab('scan')};const del=node('button','削除');del.onclick=()=>{if(confirm('この記録を削除しますか？')){state.records=state.records.filter(x=>x.id!==r.id);save();render()}};d.append(edit,del);$('records').append(d)}draw(rows)}
